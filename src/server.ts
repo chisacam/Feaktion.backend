@@ -1,9 +1,9 @@
 import Express from 'express'
-import BodyParser from 'body-parser'
 
 export const startServer = async () => {
   const app: Express.Application = Express()
-  app.use(BodyParser())
+  app.use(Express.json())
+  app.use(Express.urlencoded({extended: false}))
 
   const host: string = process.env.HOST || '0.0.0.0'
   const port: string = process.env.PORT || '3000'
