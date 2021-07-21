@@ -1,0 +1,15 @@
+{
+    "verbose": true,
+    "ignore": [
+        "node_modules/**/*",
+        ".git",
+        ".gitignore",
+        "README.md"
+    ],
+    "watch": [
+        ".env", 
+        "src/**/*.ts"
+    ],
+    "ext": "ts",
+    "exec": "ts-node ./src/app.ts"
+}

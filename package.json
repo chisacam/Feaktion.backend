@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --watch 'src/**/!(*.test).ts' --exec 'ts-node src/app.ts' --ext ts",
+    "start": "node src/app.ts",
+    "start:dev": "nodemon",
     "dist": "tsc"
   },
   "devDependencies": {
