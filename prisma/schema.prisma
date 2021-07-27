@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model comment {
+  comment_id         Int          @id @default(autoincrement())
+  episode_id         Int          @default(autoincrement())
+  user_id            Int          @default(autoincrement())
+  comment_body       String?      @db.VarChar(100)
+  comment_uploaddate DateTime?    @db.Timestamp(0)
+  comment_updatedate DateTime?    @db.Timestamp(0)
+  episode            episode      @relation(fields: [episode_id], references: [episode_id])
+  fiction_user       fiction_user @relation(fields: [user_id], references: [user_id])
+}
+
+model episode {
+  episode_id          Int            @id @default(autoincrement())
+  fiction_id          Int            @default(autoincrement())
+  episode_title       String?        @db.VarChar(50)
+  episode_description String?        @db.VarChar(100)
+  episode_uploaddate  DateTime?      @db.Timestamp(0)
+  episode_updatedate  DateTime?      @db.Timestamp(0)
+  fiction             fiction        @relation(fields: [fiction_id], references: [fiction_id])
+  comment             comment[]
+  fiction_like        fiction_like[]
+  scene               scene[]
+}
+
+model fiction {
+  fiction_id          Int          @id @default(autoincrement())
+  user_id             Int          @default(autoincrement())
+  fiction_thumb       String?      @db.VarChar(50)
+  fiction_title       String?      @db.VarChar(50)
+  fiction_description String?      @db.VarChar(100)
+  fiction_uploaddate  DateTime?    @db.Timestamp(0)
+  fiction_updatedate  DateTime?    @db.Timestamp(0)
+  genre               String?      @db.VarChar(50)
+  tag                 String?      @db.VarChar(50)
+  fiction_user        fiction_user @relation(fields: [user_id], references: [user_id])
+  episode             episode[]
+}
+
+model fiction_like {
+  like_id         Int          @id @default(autoincrement())
+  episode_id      Int          @default(autoincrement())
+  fiction_id      Int          @default(autoincrement())
+  user_id         Int          @default(autoincrement())
+  liked           Boolean?
+  like_updatedate DateTime?    @db.Timestamp(0)
+  episode         episode      @relation(fields: [episode_id], references: [episode_id])
+  fiction_user    fiction_user @relation(fields: [user_id], references: [user_id])
+}
+
+model fiction_user {
+  user_id         Int               @id @default(autoincrement())
+  id              String?           @db.VarChar(50)
+  password        String?           @db.VarChar(50)
+  nickname        String?           @db.VarChar(50)
+  profile         String?           @db.VarChar(50)
+  sex             String?           @db.VarChar(4)
+  intro           String?           @db.VarChar(100)
+  regdate         DateTime?         @db.Timestamp(0)
+  agree_service   Boolean?
+  agree_info      Boolean?
+  interest        String?           @db.VarChar(50)
+  comment         comment[]
+  fiction         fiction[]
+  fiction_like    fiction_like[]
+  reading_history reading_history[]
+  viewer_setting  viewer_setting[]
+}
+
+model reading_history {
+  reading_id   Int          @id @default(autoincrement())
+  scene_id     Int          @default(autoincrement())
+  episode_id   Int          @default(autoincrement())
+  user_id      Int          @default(autoincrement())
+  reading_date DateTime?    @db.Timestamp(0)
+  scene        scene        @relation(fields: [scene_id], references: [scene_id])
+  fiction_user fiction_user @relation(fields: [user_id], references: [user_id])
+}
+
+model scene {
+  scene_id         Int               @id @default(autoincrement())
+  episode_id       Int               @default(autoincrement())
+  scene_background String?           @db.VarChar(8)
+  scene_title      String?           @db.VarChar(50)
+  scene_uploaddate DateTime?         @db.Timestamp(0)
+  scene_updatedate DateTime?         @db.Timestamp(0)
+  episode          episode           @relation(fields: [episode_id], references: [episode_id])
+  reading_history  reading_history[]
+}
+
+model viewer_setting {
+  viewer_setting_id Int          @id @default(autoincrement())
+  user_id           Int          @default(autoincrement())
+  fontsize          Int?
+  font              String?      @db.VarChar(20)
+  paragraph_width   Int?
+  paragraph_space   Int?
+  line_space        Int?
+  background_color  String?      @db.VarChar(20)
+  fiction_user      fiction_user @relation(fields: [user_id], references: [user_id])
+}
