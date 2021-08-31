@@ -17,13 +17,12 @@ services:
         restart: always
         container_name: pgsql
         volumes: 
-            - ./sql/Feaktion.sql:/sql/Fiction.sql
-            - ./dbdata:/var/lib/postgresql/dbdata
+            - ./dbdata:/var/lib/postgresql/data
         environment:
             POSTGRES_PASSWORD: fiction1234!
             POSTGRES_DB: fiction_main
         ports:
-            - 15432:5432
+            - 5432:5432
 
     adminer:
         image: adminer
