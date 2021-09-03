@@ -23,7 +23,7 @@ services:
             POSTGRES_PASSWORD: fiction1234!
             POSTGRES_DB: fiction_main
         ports:
-            - 15432:5432
+            - 5432:5432
 
     adminer:
         image: adminer

@@ -42,7 +42,6 @@ model fiction {
   genre               String?      @db.VarChar(50)
   tag                 String?      @db.VarChar(50)
   fiction_user        fiction_user @relation(fields: [user_id], references: [user_id])
-  episode             episode[]
 }
 
 model fiction_like {
@@ -59,20 +58,15 @@ model fiction_like {
 model fiction_user {
   user_id         Int               @id @default(autoincrement())
   id              String?           @db.VarChar(50)
-  password        String?           @db.VarChar(50)
+  password        String?           @db.VarChar(100)
   nickname        String?           @db.VarChar(50)
   profile         String?           @db.VarChar(50)
   sex             String?           @db.VarChar(4)
   intro           String?           @db.VarChar(100)
-  regdate         DateTime?         @db.Timestamp(0)
+  regdate         DateTime?         @default(now())
   agree_service   Boolean?
   agree_info      Boolean?
   interest        String?           @db.VarChar(50)
-  comment         comment[]
-  fiction         fiction[]
-  fiction_like    fiction_like[]
-  reading_history reading_history[]
-  viewer_setting  viewer_setting[]
 }
 
 model reading_history {
@@ -106,4 +100,9 @@ model viewer_setting {
   line_space        Int?
   background_color  String?      @db.VarChar(20)
   fiction_user      fiction_user @relation(fields: [user_id], references: [user_id])
+}
+
+model category {
+  category_id       Int          @id @default(autoincrement())
+  name              String       @db.VarChar(20)
 }
