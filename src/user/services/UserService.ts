@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 const createUser = async(data: IUser) => {
     const user = await prisma.fiction_user.create({
         data : {
-            // user_id: data.user_id,
+            user_id: data.user_id,
             id: data.id,
             password: data.password,
             nickname: data.intro,
@@ -16,7 +16,6 @@ const createUser = async(data: IUser) => {
             agree_info: data.agree_info,
             agree_service: data.agree_service,
             interest: data.interest
-
         }
     })
     return user

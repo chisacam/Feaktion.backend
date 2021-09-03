@@ -14,8 +14,6 @@ model comment {
   comment_body       String?      @db.VarChar(100)
   comment_uploaddate DateTime?    @db.Timestamp(0)
   comment_updatedate DateTime?    @db.Timestamp(0)
-  episode            episode      @relation(fields: [episode_id], references: [episode_id])
-  fiction_user       fiction_user @relation(fields: [user_id], references: [user_id])
 }
 
 model episode {
@@ -25,10 +23,6 @@ model episode {
   episode_description String?        @db.VarChar(100)
   episode_uploaddate  DateTime?      @db.Timestamp(0)
   episode_updatedate  DateTime?      @db.Timestamp(0)
-  fiction             fiction        @relation(fields: [fiction_id], references: [fiction_id])
-  comment             comment[]
-  fiction_like        fiction_like[]
-  scene               scene[]
 }
 
 model fiction {
@@ -41,7 +35,6 @@ model fiction {
   fiction_updatedate  DateTime?    @db.Timestamp(0)
   genre               String?      @db.VarChar(50)
   tag                 String?      @db.VarChar(50)
-  fiction_user        fiction_user @relation(fields: [user_id], references: [user_id])
 }
 
 model fiction_like {
@@ -51,8 +44,6 @@ model fiction_like {
   user_id         Int          @default(autoincrement())
   liked           Boolean?
   like_updatedate DateTime?    @db.Timestamp(0)
-  episode         episode      @relation(fields: [episode_id], references: [episode_id])
-  fiction_user    fiction_user @relation(fields: [user_id], references: [user_id])
 }
 
 model fiction_user {
@@ -75,8 +66,6 @@ model reading_history {
   episode_id   Int          @default(autoincrement())
   user_id      Int          @default(autoincrement())
   reading_date DateTime?    @db.Timestamp(0)
-  scene        scene        @relation(fields: [scene_id], references: [scene_id])
-  fiction_user fiction_user @relation(fields: [user_id], references: [user_id])
 }
 
 model scene {
@@ -86,8 +75,6 @@ model scene {
   scene_title      String?           @db.VarChar(50)
   scene_uploaddate DateTime?         @db.Timestamp(0)
   scene_updatedate DateTime?         @db.Timestamp(0)
-  episode          episode           @relation(fields: [episode_id], references: [episode_id])
-  reading_history  reading_history[]
 }
 
 model viewer_setting {
@@ -99,7 +86,6 @@ model viewer_setting {
   paragraph_space   Int?
   line_space        Int?
   background_color  String?      @db.VarChar(20)
-  fiction_user      fiction_user @relation(fields: [user_id], references: [user_id])
 }
 
 model category {
