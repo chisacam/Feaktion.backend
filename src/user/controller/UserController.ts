@@ -6,7 +6,6 @@ import { UserService } from "../services";
 
 // 회원가입
 const signup = async(req: Request, res: Response, next: NextFunction) => {
-    console.log(11111)
     const { 
         id, 
         password, 
@@ -66,6 +65,19 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
                 errorMessage: "아이디 또는 패스워드가 잘못됐습니다."
             })
         }
+
+        const token = jwt.sign({
+            id,
+            password
+        }, process.env.JWT_SECRET, {
+            expiresIn: '1m', // 1분
+            issuer: 'justin',
+        });
+
+        res.status(401).send({
+            status: "success",
+            token
+        })
 
     } catch(err) {
         next(err)
