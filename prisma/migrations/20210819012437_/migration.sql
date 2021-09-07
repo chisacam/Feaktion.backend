@@ -13,7 +13,7 @@ CREATE TABLE "comment" (
 -- CreateTable
 CREATE TABLE "episode" (
     "episode_id" SERIAL NOT NULL,
-    "fiction_id" SERIAL NOT NULL,
+    "feaktion_id" SERIAL NOT NULL,
     "episode_title" VARCHAR(50),
     "episode_description" VARCHAR(100),
     "episode_uploaddate" TIMESTAMP(0),
@@ -23,25 +23,25 @@ CREATE TABLE "episode" (
 );
 
 -- CreateTable
-CREATE TABLE "fiction" (
-    "fiction_id" SERIAL NOT NULL,
+CREATE TABLE "feaktion" (
+    "feaktion_id" SERIAL NOT NULL,
     "user_id" SERIAL NOT NULL,
-    "fiction_thumb" VARCHAR(50),
-    "fiction_title" VARCHAR(50),
-    "fiction_description" VARCHAR(100),
-    "fiction_uploaddate" TIMESTAMP(0),
-    "fiction_updatedate" TIMESTAMP(0),
+    "feaktion_thumb" VARCHAR(50),
+    "feaktion_title" VARCHAR(50),
+    "feaktion_description" VARCHAR(100),
+    "feaktion_uploaddate" TIMESTAMP(0),
+    "feaktion_updatedate" TIMESTAMP(0),
     "genre" VARCHAR(50),
     "tag" VARCHAR(50),
 
-    PRIMARY KEY ("fiction_id")
+    PRIMARY KEY ("feaktion_id")
 );
 
 -- CreateTable
-CREATE TABLE "fiction_like" (
+CREATE TABLE "feaktion_like" (
     "like_id" SERIAL NOT NULL,
     "episode_id" SERIAL NOT NULL,
-    "fiction_id" SERIAL NOT NULL,
+    "feaktion_id" SERIAL NOT NULL,
     "user_id" SERIAL NOT NULL,
     "liked" BOOLEAN,
     "like_updatedate" TIMESTAMP(0),
@@ -50,7 +50,7 @@ CREATE TABLE "fiction_like" (
 );
 
 -- CreateTable
-CREATE TABLE "fiction_user" (
+CREATE TABLE "feaktion_user" (
     "user_id" SERIAL NOT NULL,
     "id" VARCHAR(50),
     "password" VARCHAR(50),
@@ -107,28 +107,28 @@ CREATE TABLE "viewer_setting" (
 ALTER TABLE "comment" ADD FOREIGN KEY ("episode_id") REFERENCES "episode"("episode_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comment" ADD FOREIGN KEY ("user_id") REFERENCES "fiction_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "comment" ADD FOREIGN KEY ("user_id") REFERENCES "feaktion_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "episode" ADD FOREIGN KEY ("fiction_id") REFERENCES "fiction"("fiction_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "episode" ADD FOREIGN KEY ("feaktion_id") REFERENCES "feaktion"("feaktion_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "fiction" ADD FOREIGN KEY ("user_id") REFERENCES "fiction_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "feaktion" ADD FOREIGN KEY ("user_id") REFERENCES "feaktion_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "fiction_like" ADD FOREIGN KEY ("episode_id") REFERENCES "episode"("episode_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "feaktion_like" ADD FOREIGN KEY ("episode_id") REFERENCES "episode"("episode_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "fiction_like" ADD FOREIGN KEY ("user_id") REFERENCES "fiction_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "feaktion_like" ADD FOREIGN KEY ("user_id") REFERENCES "feaktion_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "reading_history" ADD FOREIGN KEY ("scene_id") REFERENCES "scene"("scene_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reading_history" ADD FOREIGN KEY ("user_id") REFERENCES "fiction_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "reading_history" ADD FOREIGN KEY ("user_id") REFERENCES "feaktion_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "scene" ADD FOREIGN KEY ("episode_id") REFERENCES "episode"("episode_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "viewer_setting" ADD FOREIGN KEY ("user_id") REFERENCES "fiction_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "viewer_setting" ADD FOREIGN KEY ("user_id") REFERENCES "feaktion_user"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
