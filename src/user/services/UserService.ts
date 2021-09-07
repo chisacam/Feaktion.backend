@@ -4,10 +4,9 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const createUser = async(data: IUser) => {
-    const user = await prisma.fiction_user.create({
+    const user = await prisma.feaktion_user.create({
         data : {
             user_id: data.user_id,
-            id: data.id,
             password: data.password,
             nickname: data.intro,
             profile: data.profile,
@@ -22,7 +21,7 @@ const createUser = async(data: IUser) => {
 }
 
 const findId = async(id: string) => {
-    return await prisma.fiction_user.findFirst({
+    return await prisma.feaktion_user.findFirst({
         where : {
             id
         }
