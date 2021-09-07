@@ -44,7 +44,6 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
     const { id, password } = req.body;
     try {
         const check_user = await UserService.findId(id)
-        console.log(check_user?.password, check_user?.nickname)
         if (! check_user) {
             res.status(401).send({
                 errorMessage: "아이디 또는 패스워드가 잘못됐습니다."
