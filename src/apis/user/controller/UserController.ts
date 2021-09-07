@@ -1,22 +1,19 @@
 import express, { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
-import { IUser } from "../interfaces/Iuser" 
+import { userSignup } from "../interfaces/user" 
 import { UserService } from "../services";
 
 // 회원가입
-const signup = async(req: Request, res: Response, next: NextFunction) => {
+const signup = async (req: Request, res: Response, next: NextFunction) => {
     const { 
         id, 
         password, 
         nickname, 
-        profile, 
-        sex, 
-        intro, 
+        sex,  
         agree_info,
         agree_service,
-        interest
-    }: IUser = req.body;
+    } = req.body;
     
     try {
         const foundUser = await UserService.findId(id);
@@ -24,20 +21,17 @@ const signup = async(req: Request, res: Response, next: NextFunction) => {
             return res.status(400).json({ errors: "해당 id가 이미 존재합니다."})
         }
 
-        const encryptedPassword = bcrypt.hashSync(password, 10)
-        const data = {
-            user_id: 7,
+        const encryptedPassword = await bcrypt.hash(password, 10)
+        const data: userSignup = {
             id: id,
             password: encryptedPassword,
             nickname: nickname,
-            profile: profile,
             sex: sex,
-            intro: intro,
-            agree_info: agree_info,
-            agree_service: agree_service,
-            interest: interest
+            agree_info: agree_info === 'true',
+            agree_service: agree_service === 'true',
         }
-        const user = await UserService.createUser(data)
+        console.log(data)
+        await UserService.createUser(data)
         res.status(201).send({status: "success"})
     } catch(err) {
         console.log(err)
@@ -50,7 +44,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
     const { id, password } = req.body;
     try {
         const check_user = await UserService.findId(id)
-        console.log(check_user?.password)
+        console.log(check_user?.password, check_user?.nickname)
         if (! check_user) {
             res.status(401).send({
                 errorMessage: "아이디 또는 패스워드가 잘못됐습니다."
@@ -58,7 +52,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
         }
 
         const encoded_password = check_user?.password
-        const same = bcrypt.compareSync(password, encoded_password)
+        const same = await bcrypt.compare(password, encoded_password)
 
         if (!same) {
             res.status(401).send({
@@ -68,7 +62,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
 
         const token = jwt.sign({
             id,
-            password
+            nickname: check_user?.nickname
         }, process.env.JWT_SECRET, {
             expiresIn: '1m', // 1분
             issuer: 'justin',

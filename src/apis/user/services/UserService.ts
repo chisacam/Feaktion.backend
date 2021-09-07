@@ -1,20 +1,17 @@
-import { IUser } from '../interfaces/Iuser'
+import { userSignup } from '../interfaces/user'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const createUser = async(data: IUser) => {
+const createUser = async(data: userSignup) => {
     const user = await prisma.feaktion_user.create({
         data : {
-            user_id: data.user_id,
+            id: data.id,
             password: data.password,
-            nickname: data.intro,
-            profile: data.profile,
+            nickname: data.nickname,
             sex: data.sex,
-            intro: data.intro,
             agree_info: data.agree_info,
             agree_service: data.agree_service,
-            interest: data.interest
         }
     })
     return user

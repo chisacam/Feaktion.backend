@@ -53,10 +53,10 @@ CREATE TABLE "feaktion_like" (
 CREATE TABLE "feaktion_user" (
     "user_id" SERIAL NOT NULL,
     "id" VARCHAR(50),
-    "password" VARCHAR(50),
+    "password" VARCHAR(100),
     "nickname" VARCHAR(50),
     "profile" VARCHAR(50),
-    "sex" VARCHAR(4),
+    "sex" VARCHAR(10),
     "intro" VARCHAR(100),
     "regdate" TIMESTAMP(0),
     "agree_service" BOOLEAN,
