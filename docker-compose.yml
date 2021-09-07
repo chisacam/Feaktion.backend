@@ -1,5 +1,9 @@
 version: '3'
 
+networks: 
+    backend:
+        driver: bridge
+
 services:
     node:
         image: node
@@ -30,3 +34,17 @@ services:
         container_name: pstgadmin
         ports:
             - 8080:8080
+    nginx:
+        container_name: nginx
+        restart: always
+        image: nginx:latest
+        volumes: 
+        - ./nginx/cert:/ssl
+        - ./nginx/server.conf:/etc/nginx/nginx.conf
+        ports:
+        - 443:443
+        - 80:80
+        networks:
+        - backend
+        depends_on:
+        - server
