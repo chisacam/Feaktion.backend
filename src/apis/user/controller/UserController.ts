@@ -30,7 +30,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
             agree_info: agree_info === 'true',
             agree_service: agree_service === 'true',
         }
-        console.log(data)
+
         await UserService.createUser(data)
         res.status(201).send({status: "success"})
     } catch(err) {

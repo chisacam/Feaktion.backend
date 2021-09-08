@@ -8,80 +8,80 @@ datasource db {
 }
 
 model comment {
-  comment_id         Int          @id @default(autoincrement())
-  episode_id         Int          @default(autoincrement())
-  user_id            Int          @default(autoincrement())
-  comment_body       String?      @db.VarChar(100)
-  comment_uploaddate DateTime?    @db.Timestamp(0)
-  comment_updatedate DateTime?    @db.Timestamp(0)
-  episode            episode      @relation(fields: [episode_id], references: [episode_id])
-  feaktion_user       feaktion_user @relation(fields: [user_id], references: [user_id])
+  comment_id         Int           @id @default(autoincrement())
+  episode_id         Int           @default(autoincrement())
+  user_id            Int           @default(autoincrement())
+  comment_body       String        @db.VarChar(100)
+  comment_uploaddate DateTime?     @db.Timestamp(0)
+  comment_updatedate DateTime?     @db.Timestamp(0)
+  episode            episode       @relation(fields: [episode_id], references: [episode_id])
+  feaktion_user      feaktion_user @relation(fields: [user_id], references: [user_id])
 }
 
 model episode {
-  episode_id          Int            @id @default(autoincrement())
-  feaktion_id          Int            @default(autoincrement())
-  episode_title       String?        @db.VarChar(50)
-  episode_description String?        @db.VarChar(100)
-  episode_uploaddate  DateTime?      @db.Timestamp(0)
-  episode_updatedate  DateTime?      @db.Timestamp(0)
-  feaktion             feaktion        @relation(fields: [feaktion_id], references: [feaktion_id])
+  episode_id          Int             @id @default(autoincrement())
+  feaktion_id         Int             @default(autoincrement())
+  episode_title       String          @db.VarChar(50)
+  episode_description String          @db.VarChar(100)
+  episode_uploaddate  DateTime?       @db.Timestamp(0)
+  episode_updatedate  DateTime?       @db.Timestamp(0)
+  feaktion            feaktion        @relation(fields: [feaktion_id], references: [feaktion_id])
   comment             comment[]
-  feaktion_like        feaktion_like[]
+  feaktion_like       feaktion_like[]
   scene               scene[]
 }
 
 model feaktion {
-  feaktion_id          Int          @id @default(autoincrement())
-  user_id             Int          @default(autoincrement())
-  feaktion_thumb       String?      @db.VarChar(50)
-  feaktion_title       String?      @db.VarChar(50)
-  feaktion_description String?      @db.VarChar(100)
-  feaktion_uploaddate  DateTime?    @db.Timestamp(0)
-  feaktion_updatedate  DateTime?    @db.Timestamp(0)
-  genre               String?      @db.VarChar(50)
-  tag                 String?      @db.VarChar(50)
+  feaktion_id          Int           @id @default(autoincrement())
+  user_id              Int           @default(autoincrement())
+  feaktion_thumb       String        @db.VarChar(50)
+  feaktion_title       String        @db.VarChar(50)
+  feaktion_description String        @db.VarChar(100)
+  feaktion_uploaddate  DateTime?     @db.Timestamp(0)
+  feaktion_updatedate  DateTime?     @db.Timestamp(0)
+  genre                String?       @db.VarChar(50)
+  tag                  String?       @db.VarChar(50)
   feaktion_user        feaktion_user @relation(fields: [user_id], references: [user_id])
-  episode             episode[]
+  episode              episode[]
 }
 
 model feaktion_like {
-  like_id         Int          @id @default(autoincrement())
-  episode_id      Int          @default(autoincrement())
-  feaktion_id      Int          @default(autoincrement())
-  user_id         Int          @default(autoincrement())
-  liked           Boolean?
-  like_updatedate DateTime?    @db.Timestamp(0)
-  episode         episode      @relation(fields: [episode_id], references: [episode_id])
-  feaktion_user    feaktion_user @relation(fields: [user_id], references: [user_id])
+  like_id         Int           @id @default(autoincrement())
+  episode_id      Int           @default(autoincrement())
+  feaktion_id     Int           @default(autoincrement())
+  user_id         Int           @default(autoincrement())
+  liked           Boolean
+  like_updatedate DateTime?     @db.Timestamp(0)
+  episode         episode       @relation(fields: [episode_id], references: [episode_id])
+  feaktion_user   feaktion_user @relation(fields: [user_id], references: [user_id])
 }
 
 model feaktion_user {
   user_id         Int               @id @default(autoincrement())
-  id              String?           @db.VarChar(50)
-  password        String?           @db.VarChar(100)
-  nickname        String?           @db.VarChar(50)
+  id              String            @db.VarChar(50)
+  password        String            @db.VarChar(100)
+  nickname        String            @db.VarChar(50)
   profile         String?           @db.VarChar(50)
-  sex             String?           @db.VarChar(10)
+  sex             String            @db.VarChar(10)
   intro           String?           @db.VarChar(100)
   regdate         DateTime?         @db.Timestamp(0)
-  agree_service   Boolean?
-  agree_info      Boolean?
+  agree_service   Boolean 
+  agree_info      Boolean 
   interest        String?           @db.VarChar(50)
   comment         comment[]
-  feaktion         feaktion[]
-  feaktion_like    feaktion_like[]
+  feaktion        feaktion[]
+  feaktion_like   feaktion_like[]
   reading_history reading_history[]
   viewer_setting  viewer_setting[]
 }
 
 model reading_history {
-  reading_id   Int          @id @default(autoincrement())
-  scene_id     Int          @default(autoincrement())
-  episode_id   Int          @default(autoincrement())
-  user_id      Int          @default(autoincrement())
-  reading_date DateTime?    @db.Timestamp(0)
-  scene        scene        @relation(fields: [scene_id], references: [scene_id])
+  reading_id    Int           @id @default(autoincrement())
+  scene_id      Int           @default(autoincrement())
+  episode_id    Int           @default(autoincrement())
+  user_id       Int           @default(autoincrement())
+  reading_date  DateTime?     @db.Timestamp(0)
+  scene         scene         @relation(fields: [scene_id], references: [scene_id])
   feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id])
 }
 
@@ -89,7 +89,7 @@ model scene {
   scene_id         Int               @id @default(autoincrement())
   episode_id       Int               @default(autoincrement())
   scene_background String?           @db.VarChar(8)
-  scene_title      String?           @db.VarChar(50)
+  scene_title      String            @db.VarChar(50)
   scene_uploaddate DateTime?         @db.Timestamp(0)
   scene_updatedate DateTime?         @db.Timestamp(0)
   episode          episode           @relation(fields: [episode_id], references: [episode_id])
@@ -97,13 +97,13 @@ model scene {
 }
 
 model viewer_setting {
-  viewer_setting_id Int          @id @default(autoincrement())
-  user_id           Int          @default(autoincrement())
+  viewer_setting_id Int           @id @default(autoincrement())
+  user_id           Int           @default(autoincrement())
   fontsize          Int?
-  font              String?      @db.VarChar(20)
+  font              String?       @db.VarChar(20)
   paragraph_width   Int?
   paragraph_space   Int?
   line_space        Int?
-  background_color  String?      @db.VarChar(20)
-  feaktion_user      feaktion_user @relation(fields: [user_id], references: [user_id])
+  background_color  String?       @db.VarChar(20)
+  feaktion_user     feaktion_user @relation(fields: [user_id], references: [user_id])
 }
