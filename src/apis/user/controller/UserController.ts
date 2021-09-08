@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { userSignup } from "../interfaces/user" 
-import { UserService } from "../services";
+import { UserService } from "../services"
 
 // 회원가입
 const signup = async (req: Request, res: Response, next: NextFunction) => {
@@ -32,7 +32,9 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         }
 
         await UserService.createUser(data)
-        res.status(201).send({status: "success"})
+        res.status(201).json({
+            status: "success"
+        })
     } catch(err) {
         console.log(err)
         next(err)
@@ -44,30 +46,31 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
     const { id, password } = req.body;
     try {
         const check_user = await UserService.findId(id)
-        if (! check_user) {
-            res.status(401).send({
+        if (!check_user) {
+            return res.status(401).send({
                 errorMessage: "아이디 또는 패스워드가 잘못됐습니다."
             })
         }
 
-        const encoded_password = check_user?.password
+        const encoded_password = check_user.password
         const same = await bcrypt.compare(password, encoded_password)
 
         if (!same) {
-            res.status(401).send({
+            return res.status(401).send({
                 errorMessage: "아이디 또는 패스워드가 잘못됐습니다."
             })
         }
 
         const token = jwt.sign({
             id,
-            nickname: check_user?.nickname
+            nickname: check_user?.nickname,
+            user_id: check_user?.user_id
         }, process.env.JWT_SECRET, {
             expiresIn: '1m', // 1분
             issuer: 'justin',
         });
 
-        res.status(401).send({
+        res.status(201).json({
             status: "success",
             token
         })
