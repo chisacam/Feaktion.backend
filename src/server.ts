@@ -1,7 +1,8 @@
-import Express, { Application, NextFunction } from 'express'
+import Express, { Application } from 'express'
 import 'dotenv/config'
 import routes from './apis'
 import cookieParser from 'cookie-parser'
+import { errorHandler } from './middleware/errorHandler'
 
 export const startServer = async (): Promise<void> => {
     const app: Application = Express()
@@ -15,37 +16,7 @@ export const startServer = async (): Promise<void> => {
     app.use('/', routes)
 
     //error handler
-    app.use((err: Error, req, res, next: NextFunction) => {
-        switch (err.name) {
-        case 'NotFound':
-            return res.status(404).json({
-                result: false,
-                message: err.message || 'Not Found',
-            })
-        case 'ValidationFail':
-            return res.status(400).json({
-                result: false,
-                message: err.message || 'Validation Fail',
-            })
-        case 'AlreadyExist':
-            return res.status(400).json({
-                result: false,
-                message: err.message || 'Already Exist'
-            })
-        case 'AuthError':
-            return res.status(401).json({
-                result: false,
-                message: err.message || 'Auth Error'
-            })
-        default:
-            res.status(500).json({
-                result: false,
-                message: err.message || 'server error',
-            })
-            console.warn(err.stack)
-            return next(err)
-        }
-    })
+    app.use(errorHandler)
 
     app.listen(parseInt(port), host, () => {
         console.log(`Server listening at ${host}:${port}`)
