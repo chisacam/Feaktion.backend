@@ -8,7 +8,7 @@ import { parseIntParam } from '../../../lib/parseParams'
 import { generateToken } from '../../../lib/tokenManager'
 
 // 회원가입
-export const signup = async (req: Request, res: Response, next: NextFunction) => {
+export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { 
         id,
         email,
@@ -42,7 +42,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
 }
 
 // 로그인
-export const signin = async (req: Request, res: Response, next: NextFunction) => {
+export const signin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { email, password } = req.body
 
     try {
@@ -68,7 +68,7 @@ export const signin = async (req: Request, res: Response, next: NextFunction) =>
     }
 }
 
-export const isExistId = async (req: Request, res: Response, next: NextFunction) => {
+export const isExistId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { id } = req.body
         const foundUser = await UserService.isExistUser(id)
@@ -83,7 +83,7 @@ export const isExistId = async (req: Request, res: Response, next: NextFunction)
     }
 }
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         await UserService.deleteUser(res.locals.userInfo.user_id)
         res.status(200).json({

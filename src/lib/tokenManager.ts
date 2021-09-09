@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { nullStringSafe } from './nullSafeChecker'
 
-export const generateToken = async (email: string, nickname: string, user_id: number) => {
+export const generateToken = async (email: string, nickname: string, user_id: number): Promise<string> => {
     const key = nullStringSafe(process.env.JWT_SECRET)
     const expires = nullStringSafe(process.env.JWT_EXPIRES_IN)
 
@@ -18,7 +18,7 @@ export const generateToken = async (email: string, nickname: string, user_id: nu
     )
 }
 
-export const verifyToken = async (token: string) => {
+export const verifyToken = async (token: string): Promise<string | JwtPayload> => {
     const key = nullStringSafe(process.env.JWT_SECRET)
     return jwt.verify(token, key)
 }

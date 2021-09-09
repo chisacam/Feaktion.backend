@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express'
 import { AuthError } from '../lib/customErrorClass'
 import { verifyToken } from '../lib/tokenManager'
 
-export const authToken = async (req: Request, res: Response, next: NextFunction) => {
+export const authToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { feaktion_token } = req.cookies
 
     try {

@@ -1,4 +1,4 @@
-import Express, { Application } from 'express'
+import Express, { Application, NextFunction } from 'express'
 import 'dotenv/config'
 import routes from './apis'
 import cookieParser from 'cookie-parser'
@@ -15,7 +15,7 @@ export const startServer = async (): Promise<void> => {
     app.use('/', routes)
 
     //error handler
-    app.use((err: Error, req, res, next) => {
+    app.use((err: Error, req, res, next: NextFunction) => {
         switch (err.name) {
         case 'NotFound':
             return res.status(404).json({
@@ -38,11 +38,12 @@ export const startServer = async (): Promise<void> => {
                 message: err.message || 'Auth Error'
             })
         default:
-            return res.status(500).json({
+            res.status(500).json({
                 result: false,
                 message: err.message || 'server error',
-                stack: err.stack
             })
+            console.warn(err.stack)
+            return next(err)
         }
     })
 

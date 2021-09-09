@@ -1,10 +1,11 @@
 import { userSignup } from '../interfaces/user'
 import { PrismaClient } from '@prisma/client'
+import { feaktion_user } from '.prisma/client'
 
 
 const prisma = new PrismaClient()
 
-export const createUser = async(data: userSignup) => {
+export const createUser = async(data: userSignup): Promise<feaktion_user | null> => {
     const user = await prisma.feaktion_user.create({
         data : {
             id: data.id,
@@ -19,7 +20,7 @@ export const createUser = async(data: userSignup) => {
     return user
 }
 
-export const isExistUser = async (email: string) => {
+export const isExistUser = async (email: string): Promise<feaktion_user | null> => {
     const result = await prisma.feaktion_user.findFirst({
         where : {
             email
@@ -29,7 +30,7 @@ export const isExistUser = async (email: string) => {
     return result
 }
 
-export const deleteUser = async (user_id: number) => {
+export const deleteUser = async (user_id: number): Promise<feaktion_user | null> => {
     const result = await prisma.feaktion_user.delete({
         where: {
             user_id
