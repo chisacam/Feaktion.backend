@@ -1,78 +1,66 @@
-import express, { NextFunction, Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken';
-import { userSignup } from "../interfaces/user" 
-import { UserService } from "../services"
+import { NextFunction, Request, Response } from 'express'
+import bcrypt from 'bcryptjs'
+import { userSignup } from '../interfaces/user' 
+import UserService from '../services'
+import { nullStringSafe  } from '../../../lib/nullSafeChecker'
+import { NotFoundError, AlreadyExistError, ValidationFailError } from '../../../lib/customErrorClass'
+import { parseIntParam } from '../../../lib/parseParams'
+import { generateToken } from '../../../lib/tokenManager'
 
 // 회원가입
-const signup = async (req: Request, res: Response, next: NextFunction) => {
+export const signup = async (req: Request, res: Response, next: NextFunction) => {
     const { 
-        id, 
+        id,
+        email,
         password, 
         nickname, 
         sex,  
         agree_info,
         agree_service,
-    } = req.body;
+    } = req.body
     
     try {
-        const foundUser = await UserService.findId(id);
-        if(foundUser) {
-            return res.status(400).json({ errors: "해당 id가 이미 존재합니다."})
-        }
-
-        const encryptedPassword = await bcrypt.hash(password, 10)
+        const salt = await parseIntParam(nullStringSafe(process.env.HASH_SALT), 10)
+        const encryptedPassword = await bcrypt.hash(password, salt)
         const data: userSignup = {
-            id: id,
+            id,
+            email,
             password: encryptedPassword,
-            nickname: nickname,
-            sex: sex,
+            nickname,
+            sex,
             agree_info: agree_info === 'true',
             agree_service: agree_service === 'true',
         }
 
         await UserService.createUser(data)
         res.status(201).json({
-            status: "success"
+            status: 'success'
         })
     } catch(err) {
-        console.log(err)
         next(err)
     }
 }
 
 // 로그인
-const signin = async (req: Request, res: Response, next: NextFunction) => {
-    const { id, password } = req.body;
+export const signin = async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body
+
     try {
-        const check_user = await UserService.findId(id)
-        if (!check_user) {
-            return res.status(401).send({
-                errorMessage: "아이디 또는 패스워드가 잘못됐습니다."
-            })
-        }
+        const check_user = await UserService.isExistUser(email)
+        if (!check_user) throw new NotFoundError()
 
-        const encoded_password = check_user.password
-        const same = await bcrypt.compare(password, encoded_password)
+        const isCorrectPassword: boolean = await bcrypt.compare(password, check_user.password)
+        if (!isCorrectPassword) throw new ValidationFailError()
 
-        if (!same) {
-            return res.status(401).send({
-                errorMessage: "아이디 또는 패스워드가 잘못됐습니다."
-            })
-        }
-
-        const token = jwt.sign({
-            id,
-            nickname: check_user?.nickname,
-            user_id: check_user?.user_id
-        }, process.env.JWT_SECRET, {
-            expiresIn: '1m', // 1분
-            issuer: 'justin',
-        });
-
+        const token: string = await generateToken(email, check_user.nickname, check_user.user_id)
+        res.cookie('feaktion_token', token, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 30
+        })
         res.status(201).json({
-            status: "success",
-            token
+            status: 'success',
+            token,
+            check_user
         })
 
     } catch(err) {
@@ -80,8 +68,29 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export default {
-    signup,
-    signin
+export const isExistId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.body
+        const foundUser = await UserService.isExistUser(id)
+        if(foundUser) throw new AlreadyExistError()
+    
+        res.status(200).json({
+            result: true,
+            message: '사용가능한 email 입니다.'
+        })
+    } catch(err) {
+        next(err)
+    }
 }
 
+export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await UserService.deleteUser(res.locals.userInfo.user_id)
+        res.status(200).json({
+            result: true,
+            message: '삭제완료',
+        })
+    } catch(err) {
+        next(err)
+    }
+}

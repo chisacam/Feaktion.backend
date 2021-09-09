@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
-import UserRouter  from './user/routes/UserRouter';
+import { Router, Request, Response } from 'express'
+import UserRouter  from './user/routes/UserRouter'
 
-const router = Router();
+const router = Router()
 
-router.use('/users', UserRouter);
+router.use('/users', UserRouter)
 router.get('/', async(req: Request, res: Response)=> {
-    res.send("app get is running")
-  })
-export default router;
+    res.send('app get is running')
+})
+export default router

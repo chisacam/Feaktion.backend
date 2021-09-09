@@ -59,6 +59,7 @@ model feaktion_like {
 model feaktion_user {
   user_id         Int               @id @default(autoincrement())
   id              String            @db.VarChar(50)
+  email           String            @unique @db.VarChar(30)
   password        String            @db.VarChar(100)
   nickname        String            @db.VarChar(50)
   profile         String?           @db.VarChar(50)

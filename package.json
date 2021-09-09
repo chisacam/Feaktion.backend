@@ -7,14 +7,18 @@
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
     "dist": "tsc",
-    "deploy:dev": "yarn && nodemon src/app.ts"
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint --fix \"src/**/*.ts\"",
+    "lint:init": "eslint --init",
+    "deploy:install": "yarn"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^16.6.1",
-    "@typescript-eslint/eslint-plugin": "^4.20.0",
-    "@typescript-eslint/parser": "^4.20.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
@@ -27,6 +31,7 @@
   "dependencies": {
     "@prisma/client": "^3.0.1",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
