@@ -58,9 +58,9 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
             maxAge: 1000 * 60 * 60 * 24 * 30
         })
         res.status(201).json({
-            status: 'success',
+            result: true,
+            message: 'success',
             token,
-            check_user
         })
 
     } catch(err) {

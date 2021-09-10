@@ -7,7 +7,7 @@ const router = Router()
 
 const sign_up_data_check = [
     check('id', 'id is required').not().isEmpty(),
-    check('email', 'email is required').isEmail(),
+    check('email', 'email is required').isEmail().not().isEmpty(),
     check('password', 'password len 6').isLength({ min: 8, max: 15 }),
     check('nickname', 'nickname is required').exists(), 
     check('sex', 'sex is required').not().isEmpty(),
@@ -21,7 +21,7 @@ const sign_in_data_check = [
 ]
 
 const exist_email_check = [
-    check('email', 'not valid email').isEmail()
+    check('email', 'not valid email').isEmail().not().isEmpty()
 ]
 
 const error_callback = (req, res, next) => {
@@ -31,7 +31,7 @@ const error_callback = (req, res, next) => {
 }
 router.post('/signup', sign_up_data_check, error_callback, UserController.signup)
 router.post('/signin', sign_in_data_check, error_callback, UserController.signin)
-router.post('/idexistcheck', exist_email_check, UserController.isExistId)
+router.post('/idexistcheck', exist_email_check, error_callback, UserController.isExistId)
 router.delete('/', authToken, UserController.deleteUser)
 
 export default router
