@@ -70,8 +70,8 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
 
 export const isExistId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { id } = req.body
-        const foundUser = await UserService.isExistUser(id)
+        const { email } = req.body
+        const foundUser = await UserService.isExistUser(email)
         if(foundUser) throw new AlreadyExistError()
     
         res.status(200).json({
