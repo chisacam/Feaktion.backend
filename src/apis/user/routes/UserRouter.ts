@@ -20,6 +20,10 @@ const sign_in_data_check = [
     check('password', 'password is required').not().isEmpty(),
 ]
 
+const exist_email_check = [
+    check('email', 'not valid email').isEmail()
+]
+
 const error_callback = (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) throw new ValidationFailError()
@@ -27,7 +31,7 @@ const error_callback = (req, res, next) => {
 }
 router.post('/signup', sign_up_data_check, error_callback, UserController.signup)
 router.post('/signin', sign_in_data_check, error_callback, UserController.signin)
-router.post('/idexistcheck', UserController.isExistId)
+router.post('/idexistcheck', exist_email_check, UserController.isExistId)
 router.delete('/', authToken, UserController.deleteUser)
 
 export default router
