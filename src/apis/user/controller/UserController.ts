@@ -85,7 +85,14 @@ export const isExistId = async (req: Request, res: Response, next: NextFunction)
 
 export const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        await UserService.deleteUser(res.locals.userInfo.user_id)
+        const { password } = req.body
+        const { user_id, email } = res.locals.userInfo
+        const check_user = await UserService.isExistUser(email)
+        if (!check_user) throw new NotFoundError()
+
+        const isCorrectPassword: boolean = await bcrypt.compare(password, check_user.password)
+        if (!isCorrectPassword) throw new ValidationFailError()
+        await UserService.deleteUser(user_id)
         res.status(200).json({
             result: true,
             message: '삭제완료',
