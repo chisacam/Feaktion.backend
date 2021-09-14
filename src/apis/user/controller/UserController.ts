@@ -28,13 +28,14 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
             password: encryptedPassword,
             nickname,
             sex,
-            agree_info: agree_info === 'true',
-            agree_service: agree_service === 'true',
         }
 
-        await UserService.createUser(data)
+        const user = await UserService.createUser(data)
+        const agreement = await UserService.agreement(user.user_id, agree_info === 'true', agree_service === 'true')
         res.status(201).json({
-            status: 'success'
+            result: true,
+            message: 'success',
+            agreement
         })
     } catch(err) {
         next(err)
