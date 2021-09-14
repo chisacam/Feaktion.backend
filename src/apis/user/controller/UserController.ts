@@ -16,7 +16,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
         nickname, 
         sex,  
         agree_info,
-        agree_service,
+    agree_service
     } = req.body
     
     try {
