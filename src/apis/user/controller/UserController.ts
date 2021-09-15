@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
-import { userSignup } from '../interfaces/user' 
+import UserInterface from '../interfaces' 
 import UserService from '../services'
 import { nullStringSafe  } from '../../../lib/nullSafeChecker'
 import { NotFoundError, AlreadyExistError, ValidationFailError } from '../../../lib/customErrorClass'
@@ -22,7 +22,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     try {
         const salt = await parseIntParam(nullStringSafe(process.env.HASH_SALT), 10)
         const encryptedPassword = await bcrypt.hash(password, salt)
-        const data: userSignup = {
+        const data: UserInterface.userSignup = {
             id,
             email,
             password: encryptedPassword,

@@ -1,11 +1,11 @@
-import { userSignup } from '../interfaces/user'
+import UserInterface from '../interfaces'
 import { PrismaClient } from '@prisma/client'
 import { feaktion_user, user_agreement } from '.prisma/client'
 
 
 const prisma = new PrismaClient()
 
-export const createUser = async(data: userSignup): Promise<feaktion_user> => {
+export const createUser = async(data: UserInterface.userSignup): Promise<feaktion_user> => {
     const user = await prisma.feaktion_user.create({
         data : {
             id: data.id,
