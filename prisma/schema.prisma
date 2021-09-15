@@ -37,6 +37,13 @@ model feaktion_tag {
   feaktion    feaktion @relation(fields: [feaktion_id], references: [feaktion_id])
 }
 
+model feaktion_genre {
+  id          Int      @id @default(autoincrement())
+  feaktion_id Int      @default(autoincrement())
+  genre       String   @db.VarChar(50)
+  feaktion    feaktion @relation(fields: [feaktion_id], references: [feaktion_id])
+}
+
 model episode {
   episode_id          Int             @id @default(autoincrement())
   feaktion_id         Int             @default(autoincrement())
@@ -58,10 +65,10 @@ model feaktion {
   feaktion_description String         @db.VarChar(100)
   feaktion_uploaddate  DateTime       @default(now()) @db.Timestamp(0)
   feaktion_updatedate  DateTime       @default(now()) @db.Timestamp(0)
-  genre                String         @db.VarChar(50)
   feaktion_user        feaktion_user  @relation(fields: [user_id], references: [user_id])
   episode              episode[]
   feaktion_tag         feaktion_tag[]
+  feaktion_genre       feaktion_genre[]
 }
 
 model feaktion_like {
