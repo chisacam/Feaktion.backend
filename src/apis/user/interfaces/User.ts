@@ -5,3 +5,8 @@ export interface userSignup {
     nickname: string
     sex: string
 }
+
+export interface userViewer {
+    id: string,
+    nickname: string
+}

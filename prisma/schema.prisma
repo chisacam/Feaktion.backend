@@ -60,9 +60,10 @@ model episode {
 model feaktion {
   feaktion_id          Int            @id @default(autoincrement())
   user_id              Int            @default(autoincrement())
-  feaktion_thumb       String         @db.VarChar(50)
+  feaktion_thumb       String         @db.VarChar(200)
   feaktion_title       String         @db.VarChar(50)
-  feaktion_description String         @db.VarChar(100)
+  feaktion_description String?        @db.VarChar(100)
+  feaktion_type        String         @db.VarChar(10)
   feaktion_uploaddate  DateTime       @default(now()) @db.Timestamp(0)
   feaktion_updatedate  DateTime       @default(now()) @db.Timestamp(0)
   feaktion_user        feaktion_user  @relation(fields: [user_id], references: [user_id])
