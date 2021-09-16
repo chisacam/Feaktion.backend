@@ -1,4 +1,3 @@
-import { feaktion_genre, feaktion_tag, feaktion_user } from '.prisma/client'
 import UserInterface from '../../user/interfaces'
 
 export interface feaktionData {

@@ -5,7 +5,7 @@ import FeaktionService from '../services'
 
 
 export const postFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { feaktion_title, feaktion_description, genre, thumb, tag, feaktion_type } = req.body
+    const { feaktion_title, feaktion_description, genres, thumb, tags, feaktion_type } = req.body
     const { user_id } = res.locals.userInfo
 
     try {
@@ -17,15 +17,19 @@ export const postFeaktion = async (req: Request, res: Response, next: NextFuncti
             feaktion_type
         })
 
-        const feaktion_genre = [{
-            feaktion_id: data.feaktion_id,
-            genre
-        }]
+        const feaktion_genre = genres.map((genre) => {
+            return {
+                feaktion_id: data.feaktion_id,
+                genre
+            }
+        })
 
-        const feaktion_tag = [{
-            feaktion_id: data.feaktion_id,
-            tag
-        }]
+        const feaktion_tag = tags.map((tag) => {
+            return {
+                feaktion_id: data.feaktion_id,
+                tag
+            }
+        })
         await FeaktionService.addGenre(feaktion_genre)
     
         await FeaktionService.addTag(feaktion_tag)

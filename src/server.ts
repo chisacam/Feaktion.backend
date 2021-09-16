@@ -11,7 +11,7 @@ export const startServer = async (): Promise<void> => {
     const port: string = process.env.PORT || '3000'
 
     app.use(Express.json())
-    app.use(Express.urlencoded({extended: false}))
+    app.use(Express.urlencoded({extended: true}))
     app.use(cookieParser())
     app.use('/', routes)
 
