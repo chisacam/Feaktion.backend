@@ -48,7 +48,6 @@ model episode {
   episode_id          Int             @id @default(autoincrement())
   feaktion_id         Int             @default(autoincrement())
   episode_title       String          @db.VarChar(50)
-  episode_description String          @db.VarChar(100)
   episode_uploaddate  DateTime        @default(now()) @db.Timestamp(0)
   episode_updatedate  DateTime        @default(now()) @db.Timestamp(0)
   feaktion            feaktion        @relation(fields: [feaktion_id], references: [feaktion_id])
@@ -139,7 +138,7 @@ model reading_history {
 model scene {
   scene_id         Int               @id @default(autoincrement())
   episode_id       Int               @default(autoincrement())
-  scene_background String?           @db.VarChar(8)
+  scene_background String?           @db.VarChar(200)
   scene_title      String            @db.VarChar(50)
   scene_uploaddate DateTime          @default(now()) @db.Timestamp(0)
   scene_updatedate DateTime          @default(now()) @db.Timestamp(0)

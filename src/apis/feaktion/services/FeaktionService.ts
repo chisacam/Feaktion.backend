@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { feaktion } from '.prisma/client'
 import FeaktionInterface from '../interfaces'
-import { feaktionResponse } from '../interfaces/Feaktion'
 
 const prisma = new PrismaClient()
 
@@ -13,7 +12,7 @@ export const createFeaktion = async (data: FeaktionInterface.feaktionData): Prom
     return result
 }
 
-export const getFeaktion = async (feaktion_id: number): Promise<feaktionResponse | null> => {
+export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterface.feaktionResponse | null> => {
     const result = await prisma.feaktion.findUnique({
         select: {
             feaktion_title: true,
