@@ -42,12 +42,7 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
                     episode_id: true,
                     episode_title: true,
                     episode_uploaddate: true,
-                    episode_updatedate: true,
-                    scene: {
-                        select: {
-                            scene_title: true
-                        }
-                    }
+                    episode_updatedate: true
                 }
             }
         },

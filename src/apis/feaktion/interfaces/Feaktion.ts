@@ -1,11 +1,12 @@
 import UserInterface from '../../user/interfaces'
-
+import EpisodeInterface from '../../episode/interfaces'
 export interface feaktionData {
     feaktion_thumb: string
     feaktion_title: string
     feaktion_description: string
     user_id: number
     feaktion_type: string
+    feaktion_pub: string
 }
 
 export interface feaktionResponse {
@@ -17,9 +18,9 @@ export interface feaktionResponse {
     feaktion_type: string,
     feaktion_user: UserInterface.userViewer,
     feaktion_tag: feaktionTagResponse[],
-    feaktion_genre: feaktionGenreResponse[]
+    feaktion_genre: feaktionGenreResponse[],
+    episode: EpisodeInterface.episodeResponse[]
 }
-
 export interface feaktionTagResponse {
     tag: string
 }

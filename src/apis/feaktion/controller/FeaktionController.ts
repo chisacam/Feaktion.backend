@@ -1,3 +1,4 @@
+import { Prisma } from '.prisma/client'
 import { Request, Response, NextFunction } from 'express'
 import { NotFoundError } from '../../../lib/customErrorClass'
 import { parseIntParam } from '../../../lib/parseParams'
@@ -5,7 +6,7 @@ import FeaktionService from '../services'
 
 
 export const postFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { feaktion_title, feaktion_description, genres, thumb, tags, feaktion_type } = req.body
+    const { feaktion_title, feaktion_description, genres, thumb, tags, feaktion_type, feaktion_pub } = req.body
     const { user_id } = res.locals.userInfo
 
     try {
@@ -14,7 +15,8 @@ export const postFeaktion = async (req: Request, res: Response, next: NextFuncti
             feaktion_description,
             user_id,
             feaktion_thumb: 'https://image.novelpia.com',
-            feaktion_type
+            feaktion_type,
+            feaktion_pub
         })
 
         const feaktion_genre = genres.map((genre) => {
@@ -51,6 +53,7 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
         const feaktion_id_int = await parseIntParam(feaktion_id)
         const data = await FeaktionService.getFeaktion(feaktion_id_int)
         if (!data) throw new NotFoundError()
+
         res.status(200).json({
             result: true,
             message: 'get feaktion 성공',
