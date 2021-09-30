@@ -1,4 +1,3 @@
-import { Prisma } from '.prisma/client'
 import { Request, Response, NextFunction } from 'express'
 import { NotFoundError } from '../../../lib/customErrorClass'
 import { parseIntParam } from '../../../lib/parseParams'
@@ -57,6 +56,21 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
         res.status(200).json({
             result: true,
             message: 'get feaktion 성공',
+            data
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const getFeaktionMany = async (req, res, next) => {
+    try {
+        const data = await FeaktionService.getFeaktionMany()
+        if (!data) throw new NotFoundError()
+
+        res.status(200).json({
+            result: true,
+            message: 'get feaktions 성공',
             data
         })
     } catch(err) {

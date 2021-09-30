@@ -23,7 +23,7 @@ model reply {
   reply_id         Int           @id @default(autoincrement())
   comment_id       Int           @default(autoincrement())
   user_id          Int           @default(autoincrement())
-  reply_body       String        @db.VarChar(100)
+  reply_body       String        @db.VarChar(300)
   reply_uploaddate DateTime      @default(now()) @db.Timestamp(0)
   reply_updatedate DateTime      @default(now()) @db.Timestamp(0)
   comment          comment       @relation(fields: [comment_id], references: [comment_id])
@@ -74,7 +74,7 @@ model feaktion {
   feaktion_title       String               @db.VarChar(50)
   feaktion_description String?              @db.VarChar(100)
   feaktion_type        String               @db.VarChar(10)
-  feaktion_pub         String
+  feaktion_pub         String               @db.VarChar(10)
   feaktion_uploaddate  DateTime             @default(now()) @db.Timestamp(0)
   feaktion_updatedate  DateTime             @default(now()) @db.Timestamp(0)
   feaktion_user        feaktion_user        @relation(fields: [user_id], references: [user_id])
@@ -84,7 +84,7 @@ model feaktion {
   episode_temp_saved   episode_temp_saved[]
 }
 
-model feaktion_like {
+model episode_like {
   like_id         Int           @id @default(autoincrement())
   episode_id      Int           @default(autoincrement())
   feaktion_id     Int           @default(autoincrement())

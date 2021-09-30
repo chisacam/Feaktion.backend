@@ -8,6 +8,15 @@ export const createEpisode = async (data: any): Promise<any> => {
         data
     })
 
+    await prisma.feaktion.update({
+        where: {
+            feaktion_id: data.feaktion_id
+        },
+        data: {
+            feaktion_updatedate: new Date()
+        }
+    })
+
     return result
 }
 
@@ -15,6 +24,9 @@ export const getEpisode = async (episode_id: number): Promise<any> => {
     const result = await prisma.episode.findUnique({
         where: {
             episode_id
+        },
+        include: {
+            comment: true
         }
     })
 

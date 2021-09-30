@@ -7,7 +7,7 @@ import EpisodeService from '../services'
 export const postEpisode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { episode_title, scenes } = req.body
     const { feaktion_id } = req.params
-    const parsed_scenes = scenes.map((scene) => JSON.parse(scene))
+    const parsed_scenes = JSON.parse(scenes)
     const feaktion_id_int = await parseIntParam(feaktion_id)
 
     try {
