@@ -53,7 +53,7 @@ model episode {
   episode_updatedate DateTime        @default(now()) @db.Timestamp(0)
   feaktion           feaktion        @relation(fields: [feaktion_id], references: [feaktion_id])
   comment            comment[]
-  feaktion_like      feaktion_like[]
+  episode_like       episode_like[]
 }
 
 model episode_temp_saved {
@@ -105,7 +105,7 @@ model feaktion_user {
   regdate            DateTime             @default(now()) @db.Timestamp(0)
   comment            comment[]
   feaktion           feaktion[]
-  feaktion_like      feaktion_like[]
+  episode_like       episode_like[]
   reading_history    reading_history[]
   viewer_setting     viewer_setting[]
   reply              reply[]
