@@ -10,6 +10,6 @@ router.get('/error', (req, res, next) => {
     next(new Error('Wa!'))
 })
 router.get('/', async(req: Request, res: Response)=> {
-    apiResponser({ req, res, statusCode: 200 })
+    apiResponser({ req, res, data: { id: '121561121513' }, message: 'ㅋㅋㄹㅋㅋ' })
 })
 export default router

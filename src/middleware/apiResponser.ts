@@ -4,20 +4,21 @@ import { apiResponseLogger } from './apiResponseLogger'
 interface IResponseObject {
     req: Request
     res: Response
-    statusCode: number
+    statusCode?: number
     data?: unknown
     message?: string
 }
 
-export default ({ req, res, statusCode, data, message }: IResponseObject): void => {
-    const responseObject = {
-        success: true,
+export default ({ req, res, statusCode = 200, data, message }: IResponseObject): void => {
+    const payload = {
+        result: true,
         statusCode,
         message: message,
         data: data,
     }
 
-    res.status(statusCode).json(responseObject)
+    res.locals.payload = payload
+    res.status(statusCode).json(payload)
 
     apiResponseLogger({ req, res })
 }
