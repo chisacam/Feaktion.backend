@@ -6,9 +6,6 @@ const router = Router()
 
 router.use('/users', UserRouter)
 router.use('/feaktion', FeaktionRouter)
-router.get('/error', (req, res, next) => {
-    next(new Error('Wa!'))
-})
 router.get('/', async (req: Request, res: Response) => {
     apiResponser({
         req,
