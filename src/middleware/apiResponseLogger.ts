@@ -21,7 +21,7 @@ export const apiResponseLogger = ({ err, req, res }: IResponseLoggingObject): vo
         query: JSON.stringify(req.query),
         params: JSON.stringify(req.params),
         reqBody: req.body,
-        executionTime: (resTime - res.locals.requestTime).toString()
+        executionTimeInMs: (resTime - res.locals.requestTime).toString()
     }
 
     if (err) {
