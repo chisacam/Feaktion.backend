@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-import { feaktion } from '.prisma/client'
+import { PrismaClient, feaktion } from '@prisma/client'
 import FeaktionInterface from '../interfaces'
 
 const prisma = new PrismaClient()
@@ -21,6 +20,7 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
             feaktion_updatedate: true,
             feaktion_thumb: true,
             feaktion_type: true,
+            feaktion_pub: true,
             feaktion_user: {
                 select: {
                     id: true,
@@ -42,17 +42,45 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
                     episode_id: true,
                     episode_title: true,
                     episode_uploaddate: true,
-                    episode_updatedate: true,
-                    scene: {
-                        select: {
-                            scene_title: true
-                        }
-                    }
+                    episode_updatedate: true
                 }
             }
         },
         where: {
             feaktion_id
+        }
+    })
+
+    return result
+}
+
+export const getFeaktionMany = async () => {
+    const result = await prisma.feaktion.findMany({
+        select: {
+            feaktion_title: true,
+            feaktion_updatedate: true,
+            feaktion_thumb: true,
+            feaktion_type: true,
+            feaktion_pub: true,
+            feaktion_user: {
+                select: {
+                    id: true,
+                    nickname: true
+                }
+            },
+            feaktion_tag: {
+                select: {
+                    tag: true
+                }
+            },
+            feaktion_genre: {
+                select: {
+                    genre: true
+                }
+            }
+        },
+        where: {
+            feaktion_pub: 'public'
         }
     })
 
