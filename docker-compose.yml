@@ -19,7 +19,8 @@ services:
         networks:
             - backend
     db:
-        image: postgres
+        build:
+            context: ./docker/postgres
         restart: always
         container_name: pgsql
         volumes: 

@@ -5,9 +5,9 @@ import { feaktion_user, user_agreement } from '.prisma/client'
 
 const prisma = new PrismaClient()
 
-export const createUser = async(data: UserInterface.userSignup): Promise<feaktion_user> => {
+export const createUser = async (data: UserInterface.userSignup): Promise<feaktion_user> => {
     const user = await prisma.feaktion_user.create({
-        data : {
+        data: {
             id: data.id,
             email: data.email,
             password: data.password,
@@ -15,12 +15,13 @@ export const createUser = async(data: UserInterface.userSignup): Promise<feaktio
             sex: data.sex
         }
     })
+
     return user
 }
 
 export const isExistUser = async (email: string): Promise<feaktion_user | null> => {
     const result = await prisma.feaktion_user.findFirst({
-        where : {
+        where: {
             email
         }
     })
