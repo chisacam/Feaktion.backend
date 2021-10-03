@@ -9,7 +9,11 @@ router.use('/feaktion', FeaktionRouter)
 router.get('/error', (req, res, next) => {
     next(new Error('Wa!'))
 })
-router.get('/', async(req: Request, res: Response)=> {
-    apiResponser({ req, res, data: { id: '121561121513' }, message: 'ㅋㅋㄹㅋㅋ' })
+router.get('/', async (req: Request, res: Response) => {
+    apiResponser({
+        req,
+        res,
+        message: 'Server is running'
+    })
 })
 export default router

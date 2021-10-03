@@ -8,7 +8,11 @@ interface IResponseLoggingObject {
     res: Response
 }
 
-export const apiResponseLogger = ({ err, req, res }: IResponseLoggingObject): void => {
+export const apiResponseLogger = ({
+    err,
+    req,
+    res,
+}: IResponseLoggingObject): void => {
     const resTime = new Date().getTime()
     const reableResTime = dayjs(resTime).format('YYYY-MM-DD HH:mm:ss')
 
@@ -18,8 +22,10 @@ export const apiResponseLogger = ({ err, req, res }: IResponseLoggingObject): vo
         originalUrl: req.originalUrl,
         statusCode: res.statusCode.toString(),
         payload: res.locals.payload,
-        payloadBytes: res.locals.payload ? JSON.stringify(res.locals.payload).length * 2 : 0,
-        executionTimeInMs: (resTime - res.locals.requestTime).toString()
+        payloadBytes: res.locals.payload
+            ? JSON.stringify(res.locals.payload).length * 2
+            : 0,
+        executionTimeInMs: (resTime - res.locals.requestTime).toString(),
     }
 
     if (err) {
@@ -27,10 +33,9 @@ export const apiResponseLogger = ({ err, req, res }: IResponseLoggingObject): vo
             ...responseObject,
             errorName: err.name,
             errorMessage: err.message,
-            stack: JSON.stringify(err.stack)
+            stack: JSON.stringify(err.stack),
         }
     }
 
     logger.info(JSON.stringify(responseObject))
-
 }

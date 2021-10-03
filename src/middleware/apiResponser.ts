@@ -9,7 +9,13 @@ interface IResponseObject {
     message?: string
 }
 
-export default ({ req, res, statusCode = 200, data, message }: IResponseObject): void => {
+export default ({
+    req,
+    res,
+    statusCode = 200,
+    data,
+    message,
+}: IResponseObject): void => {
     const payload = {
         result: true,
         statusCode,
