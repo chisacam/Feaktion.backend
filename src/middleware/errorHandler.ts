@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
+import { logger } from '../lib/logger'
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction): unknown => {
+    
     switch (err.name) {
     case 'NotFound':
         return res.status(404).json({
@@ -27,7 +29,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
             result: false,
             message: err.message || 'server error',
         })
-        console.warn(err.stack)
+        logger.error(err.stack)
         return next(err)
     }
 }
