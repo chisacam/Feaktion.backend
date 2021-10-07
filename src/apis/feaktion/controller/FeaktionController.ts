@@ -51,12 +51,13 @@ export const postFeaktion = async (req: Request, res: Response, next: NextFuncti
 
 export const getFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { feaktion_id } = req.params
+    const { user_id } = res.locals.userInfo
 
     try {
         const feaktion_id_int = await parseIntParam(feaktion_id)
         const data = await FeaktionService.getFeaktion(feaktion_id_int)
         if (!data) throw new NotFoundError()
-        
+        data.isWriter = data.feaktion_user.user_id == user_id
         apiResponser({ 
             req, 
             res, 

@@ -45,26 +45,28 @@ model feaktion_genre {
 }
 
 model episode {
-  episode_id         Int             @id @default(autoincrement())
-  feaktion_id        Int             @default(autoincrement())
-  episode_title      String          @db.VarChar(50)
+  episode_id         Int            @id @default(autoincrement())
+  feaktion_id        Int            @default(autoincrement())
+  user_id            Int            @default(autoincrement())
+  episode_title      String         @db.VarChar(50)
   scenes             Json
-  episode_uploaddate DateTime        @default(now()) @db.Timestamp(0)
-  episode_updatedate DateTime        @default(now()) @db.Timestamp(0)
-  feaktion           feaktion        @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
+  episode_uploaddate DateTime       @default(now()) @db.Timestamp(0)
+  episode_updatedate DateTime       @default(now()) @db.Timestamp(0)
+  feaktion           feaktion       @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
+  feaktion_user      feaktion_user  @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   comment            comment[]
   episode_like       episode_like[]
 }
 
 model episode_temp_saved {
-  id                   Int            @id @default(autoincrement())
-  user_id              Int            @default(autoincrement())
-  feaktion_id          Int            @default(autoincrement())
-  title                String         @db.VarChar(50)
-  scenes               Json
-  saved_date           DateTime       @default(now()) @db.Timestamp(0)
-  feaktion             feaktion       @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
-  feaktion_user        feaktion_user  @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  id            Int           @id @default(autoincrement())
+  user_id       Int           @default(autoincrement())
+  feaktion_id   Int           @default(autoincrement())
+  title         String        @db.VarChar(50)
+  scenes        Json
+  saved_date    DateTime      @default(now()) @db.Timestamp(0)
+  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
+  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 
 model feaktion {
@@ -111,6 +113,7 @@ model feaktion_user {
   user_agreement     user_agreement[]
   user_profile       user_profile[]
   episode_temp_saved episode_temp_saved[]
+  episode            episode[]
 }
 
 model user_interest {

@@ -27,7 +27,14 @@ export const getEpisode = async (episode_id: number): Promise<any> => {
         },
         include: {
             comment: true,
-            episode_like: true
+            episode_like: true,
+            feaktion_user: {
+                select: {
+                    nickname: true,
+                    id: true,
+                    user_id: true
+                }
+            }
         }
     })
 

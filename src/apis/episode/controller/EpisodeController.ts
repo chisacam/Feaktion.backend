@@ -32,6 +32,7 @@ export const postEpisode = async (req: Request, res: Response, next: NextFunctio
 
 export const getEpisode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { episode_id } = req.params
+    const { user_id } = res.locals.userInfo
 
     try {
         const episode_id_int = await parseIntParam(episode_id)
@@ -70,7 +71,7 @@ export const deleteEpisode = async (req: Request, res: Response, next: NextFunct
     }
 }
 
-export const addEpisodeLike = async (req, res, next) => {
+export const addEpisodeLike = async (req: Request, res: Response, next: NextFunction) => {
     const { episode_id } = req.params
     const { user_id } = res.locals.userInfo
 
@@ -89,9 +90,8 @@ export const addEpisodeLike = async (req, res, next) => {
     }
 }
 
-export const removeEpisodeLike = async(req, res, next) => {
+export const removeEpisodeLike = async(req: Request, res: Response, next: NextFunction) => {
     const { like_id } = req.body
-    const { user_id } = res.locals.userInfo
 
     try {
         const like_it_int = await parseIntParam(like_id)

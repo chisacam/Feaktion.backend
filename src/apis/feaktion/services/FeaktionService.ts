@@ -24,7 +24,8 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
             feaktion_user: {
                 select: {
                     id: true,
-                    nickname: true
+                    nickname: true,
+                    user_id: true
                 }
             },
             feaktion_tag: {
