@@ -33,5 +33,8 @@ router.post('/signup', sign_up_data_check, error_callback, UserController.signup
 router.post('/signin', sign_in_data_check, error_callback, UserController.signin)
 router.post('/idexistcheck', exist_email_check, error_callback, UserController.isExistId)
 router.delete('/', authToken, UserController.deleteUser)
+router.get('/', authToken, UserController.getUserInfo)
+router.post('/interest', authToken, UserController.addInterestGenre)
+router.patch('/interest', authToken, UserController.patchInterestGenre)
 
 export default router

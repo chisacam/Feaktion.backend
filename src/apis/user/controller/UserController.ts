@@ -159,7 +159,8 @@ export const patchInterestGenre = async (req: Request, res: Response, next: Next
             statusCode: 201, 
             data, 
             result: true,
-            message: '선호장르 수정완료'})
+            message: '선호장르 수정완료'
+        })
     } catch(err) {
         next(err)
     }
