@@ -69,3 +69,40 @@ export const deleteEpisode = async (req: Request, res: Response, next: NextFunct
         next(err)
     }
 }
+
+export const addEpisodeLike = async (req, res, next) => {
+    const { episode_id } = req.params
+    const { user_id } = res.locals.userInfo
+
+    try {
+        const episode_id_int = await parseIntParam(episode_id)
+        const data = await EpisodeService.addEpisodeLike(episode_id_int, user_id)
+        apiResponser({
+            req,
+            res,
+            statusCode: 201,
+            data,
+            result: true
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const removeEpisodeLike = async(req, res, next) => {
+    const { like_id } = req.body
+    const { user_id } = res.locals.userInfo
+
+    try {
+        const like_it_int = await parseIntParam(like_id)
+        await EpisodeService.removeEpisodeLike(like_it_int)
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
+            result: true
+        })
+    } catch(err) {
+        next(err)
+    }
+}

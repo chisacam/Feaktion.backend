@@ -12,5 +12,7 @@ router.get('/:episode_id', authToken, EpisodeController.getEpisode)
 router.post('/', authToken, EpisodeController.postEpisode)
 router.delete('/:episode_id', authToken, FeaktionController.isFeaktionWriter, EpisodeController.deleteEpisode)
 router.use('/:episode_id/comment', CommentRouter)
+router.post('/:episode_id/like', authToken, EpisodeController.addEpisodeLike)
+router.delete('/:episode_id/like', authToken, EpisodeController.removeEpisodeLike)
 
 export default router

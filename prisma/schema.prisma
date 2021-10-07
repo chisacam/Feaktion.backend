@@ -87,9 +87,7 @@ model feaktion {
 model episode_like {
   like_id         Int           @id @default(autoincrement())
   episode_id      Int           @default(autoincrement())
-  feaktion_id     Int           @default(autoincrement())
   user_id         Int           @default(autoincrement())
-  liked           Boolean
   like_updatedate DateTime      @default(now()) @db.Timestamp(0)
   episode         episode       @relation(fields: [episode_id], references: [episode_id], onDelete: Cascade)
   feaktion_user   feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)

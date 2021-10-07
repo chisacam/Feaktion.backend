@@ -26,7 +26,8 @@ export const getEpisode = async (episode_id: number): Promise<any> => {
             episode_id
         },
         include: {
-            comment: true
+            comment: true,
+            episode_like: true
         }
     })
 
@@ -49,6 +50,27 @@ export const updateEpisode = async (episode_id: number, data: any): Promise<any>
             episode_id
         },
         data
+    })
+
+    return result
+}
+
+export const addEpisodeLike = async (episode_id: number, user_id: number) => {
+    const result = await prisma.episode_like.create({
+        data: {
+            episode_id,
+            user_id
+        }
+    })
+
+    return result
+}
+
+export const removeEpisodeLike = async (like_id: number) => {
+    const result = await prisma.episode_like.delete({
+        where: {
+            like_id
+        }
     })
 
     return result
