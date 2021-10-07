@@ -63,6 +63,14 @@ export const getFeaktionMany = async () => {
 
                 }
             }
+        },
+        include: {
+            feaktion_user: {
+                select: {
+                    nickname: true,
+                    id: true
+                }
+            }
         }
     })
 
