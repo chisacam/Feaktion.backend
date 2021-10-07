@@ -118,7 +118,7 @@ model feaktion_user {
 model user_interest {
   id            Int           @id @default(autoincrement())
   user_id       Int           @default(autoincrement())
-  interest      String[]
+  interest      String
   feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 

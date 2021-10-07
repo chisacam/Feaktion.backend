@@ -49,3 +49,33 @@ export const agreement = async (user_id: number, agree_info: boolean, agree_serv
 
     return result
 }
+
+export const addInterestGenre = async ( data: any ) => {
+    const result = await prisma.user_interest.createMany({
+        data
+    })
+
+    return result
+}
+
+export const removeInterestGenre = async ( where ) => {
+    const result = await prisma.user_interest.deleteMany({
+        where
+    })
+
+    return result
+}
+
+export const getUserInfo = async ( user_id ) => {
+    const result = await prisma.feaktion_user.findUnique({
+        where: {
+            user_id
+        },
+        include: {
+            user_interest: true,
+            user_profile: true
+        }
+    })
+
+    return result
+}

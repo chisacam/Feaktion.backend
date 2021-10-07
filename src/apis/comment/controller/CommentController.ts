@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { NotFoundError } from '../../../lib/customErrorClass'
 import { parseIntParam } from '../../../lib/parseParams'
+import apiResponser from '../../../middleware/apiResponser'
 import CommentService from '../services'
 
 
@@ -17,7 +18,10 @@ export const postComment = async (req: Request, res: Response, next: NextFunctio
             comment_body
         })
 
-        res.status(201).json({
+        apiResponser({
+            req,
+            res,
+            statusCode: 201,
             result: true,
             message: '댓글 생성완료',
             data
@@ -37,7 +41,10 @@ export const updateComment = async (req: Request, res: Response, next: NextFunct
             comment_body,
             comment_updatedate: new Date()
         })
-        res.status(200).json({
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
             result: true,
             message: 'update comment 성공',
             data
@@ -55,7 +62,10 @@ export const deleteComment = async (req: Request, res: Response, next: NextFunct
         const comment_id_int = await parseIntParam(comment_id)
         await CommentService.deleteComment(comment_id_int)
 
-        res.status(200).json({
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
             result: true,
             message: 'delete comment 성공'
         })
@@ -73,7 +83,9 @@ export const isCommentWriter = async (req: Request, res: Response, next: NextFun
         const result = await CommentService.isCommentWriter(comment_id_int, user_id)
 
         if (result) next()
-        else res.status(401).json({
+        else apiResponser({
+            req,
+            res,
             result,
             message: '권한이 없습니다.'
         })

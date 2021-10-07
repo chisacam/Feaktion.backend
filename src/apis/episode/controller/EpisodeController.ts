@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { NotFoundError } from '../../../lib/customErrorClass'
 import { parseIntParam } from '../../../lib/parseParams'
+import apiResponser from '../../../middleware/apiResponser'
 import EpisodeService from '../services'
 
 
@@ -16,7 +17,10 @@ export const postEpisode = async (req: Request, res: Response, next: NextFunctio
             scenes
         })
 
-        res.status(201).json({
+        apiResponser({
+            req,
+            res,
+            statusCode: 201,
             result: true,
             message: '에피소드 생성완료',
             data
@@ -33,7 +37,10 @@ export const getEpisode = async (req: Request, res: Response, next: NextFunction
         const episode_id_int = await parseIntParam(episode_id)
         const data = await EpisodeService.getEpisode(episode_id_int)
         if(!data) throw new NotFoundError()
-        res.status(200).json({
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
             result: true,
             message: 'get episode 성공',
             data
@@ -51,7 +58,10 @@ export const deleteEpisode = async (req: Request, res: Response, next: NextFunct
         const episode_id_int = await parseIntParam(episode_id)
         await EpisodeService.deleteEpisode(episode_id_int)
 
-        res.status(200).json({
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
             result: true,
             message: 'delete episode 성공'
         })

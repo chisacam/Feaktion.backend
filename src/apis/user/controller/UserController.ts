@@ -6,6 +6,7 @@ import { nullStringSafe  } from '../../../lib/nullSafeChecker'
 import { NotFoundError, AlreadyExistError, ValidationFailError } from '../../../lib/customErrorClass'
 import { parseIntParam } from '../../../lib/parseParams'
 import { generateToken } from '../../../lib/tokenManager'
+import apiResponser from '../../../middleware/apiResponser'
 
 // 회원가입
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -32,7 +33,10 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
 
         const user = await UserService.createUser(data)
         await UserService.agreement(user.user_id, agree_info === 'true', agree_service === 'true')
-        res.status(201).json({
+        apiResponser({
+            req,
+            res,
+            statusCode:201,
             result: true,
             message: 'success'
         })
@@ -57,7 +61,10 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24 * 30
         })
-        res.status(201).json({
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
             result: true,
             message: 'success',
             token,
@@ -74,7 +81,10 @@ export const isExistId = async (req: Request, res: Response, next: NextFunction)
         const foundUser = await UserService.isExistUser(email)
         if(foundUser) throw new AlreadyExistError()
     
-        res.status(200).json({
+        apiResponser({
+            req,
+            res,
+            statusCode:200,
             result: true,
             message: '사용가능한 email 입니다.'
         })
@@ -93,11 +103,81 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
         const isCorrectPassword: boolean = await bcrypt.compare(password, check_user.password)
         if (!isCorrectPassword) throw new ValidationFailError()
         await UserService.deleteUser(user_id)
-        res.status(200).json({
+        apiResponser({
+            req,
+            res,
+            statusCode:200,
             result: true,
-            message: '삭제완료',
+            message: '유저 삭제완료',
         })
     } catch(err) {
         next(err)
     }
+}
+
+export const addInterestGenre = async (req: Request, res: Response, next: NextFunction) => {
+    const { genres } = req.body
+    const { user_id } = res.locals.userInfo
+    const interest = genres.map(genre => {
+        return {
+            interest: genre,
+            user_id
+        }
+    })
+    try {    
+        const data = await UserService.addInterestGenre(interest)
+
+        apiResponser({
+            req, 
+            res, 
+            statusCode: 201, 
+            result: true,
+            data, 
+            message: '선호장르 추가완료'
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const patchInterestGenre = async (req: Request, res: Response, next: NextFunction) => {
+    const { genres, remove_genres } = req.body
+    const { user_id } = res.locals.userInfo
+    const interest = genres.map(genre => {
+        return {
+            interest: genre,
+            user_id
+        }
+    })
+    try {    
+        await UserService.removeInterestGenre(remove_genres)
+        const data = await UserService.addInterestGenre(interest)
+
+        apiResponser({
+            req, 
+            res, 
+            statusCode: 201, 
+            data, 
+            result: true,
+            message: '선호장르 수정완료'})
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const getUserInfo = async (req, res, next) => {
+    const { user_id } = res.locals.userInfo
+    try {
+        const data = await UserService.getUserInfo(user_id)
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
+            result: true,
+            data
+        })
+    } catch(err) {
+        next(err)
+    }
+    
 }

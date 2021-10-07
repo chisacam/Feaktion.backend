@@ -4,9 +4,11 @@ import { apiResponseLogger } from './apiResponseLogger'
 interface IResponseObject {
     req: Request
     res: Response
+    result: boolean
     statusCode?: number
     data?: unknown
     message?: string
+    token?: string
 }
 
 export default ({
@@ -15,12 +17,15 @@ export default ({
     statusCode = 200,
     data,
     message,
+    token,
+    result
 }: IResponseObject): void => {
     const payload = {
-        result: true,
+        result: result,
         statusCode,
         message: message,
         data: data,
+        token: token,
     }
 
     res.locals.payload = payload

@@ -36,7 +36,14 @@ export const postFeaktion = async (req: Request, res: Response, next: NextFuncti
 
         await FeaktionService.addTag(feaktion_tag)
 
-        apiResponser({ req, res, statusCode: 201, data, message: 'feaktion 생성완료' })
+        apiResponser({ 
+            req, 
+            res, 
+            statusCode: 201, 
+            result: true,
+            data, 
+            message: 'feaktion 생성완료' 
+        })
     } catch (err) {
         next(err)
     }
@@ -50,7 +57,13 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
         const data = await FeaktionService.getFeaktion(feaktion_id_int)
         if (!data) throw new NotFoundError()
         
-        apiResponser({ req, res, data, message: 'Get feaktion 성공' })
+        apiResponser({ 
+            req, 
+            res, 
+            data, 
+            result: true,
+            message: 'Get feaktion 성공' 
+        })
     } catch (err) {
         next(err)
     }
@@ -61,7 +74,13 @@ export const getFeaktionMany = async (req: Request, res: Response, next: NextFun
         const data = await FeaktionService.getFeaktionMany()
         if (!data) throw new NotFoundError()
 
-        apiResponser({ req, res, data, message: 'Get feaktions 성공' })
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Get feaktions 성공' 
+        })
     } catch(err) {
         next(err)
     }
@@ -74,7 +93,12 @@ export const deleteFeaktion = async (req: Request, res: Response, next: NextFunc
         const feaktion_id_int = await parseIntParam(feaktion_id)
         await FeaktionService.deleteFeaktion(feaktion_id_int)
         
-        apiResponser({ req, res, message: 'Delete feaktion 성공' })
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            message: 'Delete feaktion 성공' 
+        })
     } catch (err) {
         next(err)
     }
@@ -89,7 +113,11 @@ export const isFeaktionWriter = async (req: Request, res: Response, next: NextFu
         const result = await FeaktionService.isFeaktionWriter(feaktion_id_int, user_id)
 
         if (result) next()
-        else apiResponser({ req, res, message: '권한이 없습니다.' })
+        else apiResponser({ 
+            req, 
+            res,
+            result: false, 
+            message: '권한이 없습니다.' })
     } catch (err) {
         next(err)
     }
