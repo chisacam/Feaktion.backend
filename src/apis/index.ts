@@ -10,6 +10,7 @@ router.get('/', async (req: Request, res: Response) => {
     apiResponser({
         req,
         res,
+        result: true,
         message: 'Server is running'
     })
 })
