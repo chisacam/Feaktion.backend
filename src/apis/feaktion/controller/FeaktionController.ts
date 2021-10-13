@@ -90,6 +90,24 @@ export const getFeaktionMany = async (req: Request, res: Response, next: NextFun
     }
 }
 
+export const getMyFeaktionMany = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { user_id } = res.locals.userInfo
+    try {
+        const data = await FeaktionService.getMyFeaktionMany(user_id)
+        if (!data) throw new NotFoundError()
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Get My feaktions 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
 export const deleteFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { feaktion_id } = req.params
     

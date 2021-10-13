@@ -78,6 +78,24 @@ export const getFeaktionMany = async () => {
     return result
 }
 
+export const getMyFeaktionMany = async (user_id: number) => {
+    const result = await prisma.feaktion.findMany({
+        where: {
+            user_id
+        },
+        include: {
+            feaktion_user: {
+                select: {
+                    nickname: true,
+                    id: true
+                }
+            }
+        }
+    })
+
+    return result
+}
+
 export const isFeaktionWriter = async (feaktion_id: number, user_id: number): Promise<boolean> => {
     const result = await prisma.feaktion.findFirst({
         where: {
