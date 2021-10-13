@@ -8,5 +8,6 @@ export interface userSignup {
 
 export interface userViewer {
     id: string,
-    nickname: string
+    nickname: string,
+    user_id?: number
 }

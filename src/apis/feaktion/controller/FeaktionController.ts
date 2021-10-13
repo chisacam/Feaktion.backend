@@ -55,9 +55,12 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
 
     try {
         const feaktion_id_int = await parseIntParam(feaktion_id)
-        const data = await FeaktionService.getFeaktion(feaktion_id_int)
-        if (!data) throw new NotFoundError()
-        data.isWriter = data.feaktion_user.user_id == user_id
+        const orig_data = await FeaktionService.getFeaktion(feaktion_id_int)
+        if (!orig_data) throw new NotFoundError()
+        const data = {
+            ...orig_data,
+            isWriter: orig_data.feaktion_user.user_id == user_id
+        }
         apiResponser({ 
             req, 
             res, 

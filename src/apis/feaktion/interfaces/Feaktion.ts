@@ -19,8 +19,7 @@ export interface feaktionResponse {
     feaktion_user: UserInterface.userViewer,
     feaktion_tag: feaktionTagResponse[],
     feaktion_genre: feaktionGenreResponse[],
-    episode: EpisodeInterface.episodeResponse[],
-    isWriter: boolean
+    episode: EpisodeInterface.episodeResponse[]
 }
 export interface feaktionTagResponse {
     tag: string
