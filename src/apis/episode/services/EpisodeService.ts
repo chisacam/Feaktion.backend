@@ -73,6 +73,13 @@ export const updateEpisode = async (episode_id: number, data: any): Promise<any>
 }
 
 export const addEpisodeLike = async (episode_id: number, user_id: number) => {
+    const likeExists = await prisma.episode_like.findFirst({
+        where: {
+            episode_id,
+            user_id
+        }
+    })
+    if(likeExists) return false
     const result = await prisma.episode_like.create({
         data: {
             episode_id,
@@ -84,6 +91,12 @@ export const addEpisodeLike = async (episode_id: number, user_id: number) => {
 }
 
 export const removeEpisodeLike = async (like_id: number) => {
+    const likeExists = await prisma.episode_like.findUnique({
+        where: {
+            like_id
+        }
+    })
+    if(!likeExists) return false
     const result = await prisma.episode_like.delete({
         where: {
             like_id

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { NotFoundError } from '../../../lib/customErrorClass'
+import { AlreadyExistError, NotFoundError } from '../../../lib/customErrorClass'
 import { parseIntParam } from '../../../lib/parseParams'
 import apiResponser from '../../../middleware/apiResponser'
 import EpisodeService from '../services'
@@ -8,13 +8,15 @@ import EpisodeService from '../services'
 export const postEpisode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { episode_title, scenes } = req.body
     const { feaktion_id } = req.params
+    const { user_id } = res.locals.userInfo
     const feaktion_id_int = await parseIntParam(feaktion_id)
 
     try {
         const data = await EpisodeService.createEpisode({
             feaktion_id: feaktion_id_int,
             episode_title,
-            scenes
+            scenes,
+            user_id
         })
 
         apiResponser({
@@ -78,6 +80,7 @@ export const addEpisodeLike = async (req: Request, res: Response, next: NextFunc
     try {
         const episode_id_int = await parseIntParam(episode_id)
         const data = await EpisodeService.addEpisodeLike(episode_id_int, user_id)
+        if(!data) throw new AlreadyExistError()
         apiResponser({
             req,
             res,
@@ -95,7 +98,8 @@ export const removeEpisodeLike = async(req: Request, res: Response, next: NextFu
 
     try {
         const like_it_int = await parseIntParam(like_id)
-        await EpisodeService.removeEpisodeLike(like_it_int)
+        const result = await EpisodeService.removeEpisodeLike(like_it_int)
+        if(!result) throw new NotFoundError()
         apiResponser({
             req,
             res,
