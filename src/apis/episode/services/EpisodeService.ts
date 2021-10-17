@@ -20,7 +20,7 @@ export const createEpisode = async (data: any): Promise<any> => {
     return result
 }
 
-export const getEpisode = async (episode_id: number): Promise<any> => {
+export const getEpisode = async (episode_id: number, user_id: number): Promise<any> => {
     const result = await prisma.episode.findUnique({
         where: {
             episode_id
@@ -37,7 +37,22 @@ export const getEpisode = async (episode_id: number): Promise<any> => {
                     }
                 }
             },
-            episode_like: true,
+            episode_like: {
+                select: {
+                    like_id: true,
+                    feaktion_user: {
+                        select: {
+                            nickname: true,
+                            user_id: true,
+                            id: true
+                        }
+                    },
+                    like_updatedate: true
+                },
+                where: {
+                    user_id
+                }
+            },
             feaktion_user: {
                 select: {
                     nickname: true,
@@ -72,7 +87,7 @@ export const updateEpisode = async (episode_id: number, data: any): Promise<any>
     return result
 }
 
-export const addEpisodeLike = async (episode_id: number, user_id: number) => {
+export const addEpisodeLike = async (episode_id: number, feaktion_id: number, user_id: number) => {
     const likeExists = await prisma.episode_like.findFirst({
         where: {
             episode_id,
@@ -82,6 +97,7 @@ export const addEpisodeLike = async (episode_id: number, user_id: number) => {
     if(likeExists) return false
     const result = await prisma.episode_like.create({
         data: {
+            feaktion_id,
             episode_id,
             user_id
         }
@@ -104,4 +120,17 @@ export const removeEpisodeLike = async (like_id: number) => {
     })
 
     return result
+}
+
+export const getEpisodeLikeCount = async (episode_id: number) => {
+    const likeCount = await prisma.episode_like.aggregate({
+        where: {
+            episode_id
+        },
+        _count:{
+            like_id: true
+        }
+    })
+
+    return likeCount._count.like_id
 }

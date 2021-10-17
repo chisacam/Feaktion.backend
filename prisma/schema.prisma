@@ -9,11 +9,13 @@ datasource db {
 
 model comment {
   comment_id         Int           @id @default(autoincrement())
+  feaktion_id        Int           @default(autoincrement())
   episode_id         Int           @default(autoincrement())
   user_id            Int           @default(autoincrement())
   comment_body       String        @db.VarChar(100)
   comment_uploaddate DateTime      @default(now()) @db.Timestamp(0)
   comment_updatedate DateTime      @default(now()) @db.Timestamp(0)
+  feaktion           feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
   episode            episode       @relation(fields: [episode_id], references: [episode_id], onDelete: Cascade)
   feaktion_user      feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   reply              reply[]
@@ -84,13 +86,17 @@ model feaktion {
   feaktion_tag         feaktion_tag[]
   feaktion_genre       feaktion_genre[]
   episode_temp_saved   episode_temp_saved[]
+  comment              comment[]
+  episode_like         episode_like[]
 }
 
 model episode_like {
   like_id         Int           @id @default(autoincrement())
+  feaktion_id     Int           @default(autoincrement())
   episode_id      Int           @default(autoincrement())
   user_id         Int           @default(autoincrement())
   like_updatedate DateTime      @default(now()) @db.Timestamp(0)
+  feaktion        feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
   episode         episode       @relation(fields: [episode_id], references: [episode_id], onDelete: Cascade)
   feaktion_user   feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }

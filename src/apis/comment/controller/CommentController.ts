@@ -7,13 +7,14 @@ import CommentService from '../services'
 
 export const postComment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { comment_body } = req.body
-    const { episode_id } = req.params
+    const { episode_id, feaktion_id } = req.params
     const { user_id } = res.locals.userInfo
     const episode_id_int = await parseIntParam(episode_id)
-
+    const feaktion_id_int = await parseIntParam(feaktion_id)
     try {
         const data = await CommentService.createComment({
             episode_id: episode_id_int,
+            feaktion_id: feaktion_id_int,
             user_id,
             comment_body
         })
