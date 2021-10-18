@@ -38,8 +38,13 @@ export const getEpisode = async (req: Request, res: Response, next: NextFunction
 
     try {
         const episode_id_int = await parseIntParam(episode_id)
-        const data = await EpisodeService.getEpisode(episode_id_int)
-        if(!data) throw new NotFoundError()
+        const orig_data = await EpisodeService.getEpisode(episode_id_int, user_id)
+        if(!orig_data) throw new NotFoundError()
+        const likeCount = await EpisodeService.getEpisodeLikeCount(episode_id_int)
+        const data = {
+            ...orig_data,
+            likeCount
+        }
         apiResponser({
             req,
             res,
@@ -74,12 +79,13 @@ export const deleteEpisode = async (req: Request, res: Response, next: NextFunct
 }
 
 export const addEpisodeLike = async (req: Request, res: Response, next: NextFunction) => {
-    const { episode_id } = req.params
+    const { episode_id, feaktion_id } = req.params
     const { user_id } = res.locals.userInfo
 
     try {
         const episode_id_int = await parseIntParam(episode_id)
-        const data = await EpisodeService.addEpisodeLike(episode_id_int, user_id)
+        const feaktion_id_int = await parseIntParam(feaktion_id)
+        const data = await EpisodeService.addEpisodeLike(episode_id_int, feaktion_id_int, user_id)
         if(!data) throw new AlreadyExistError()
         apiResponser({
             req,

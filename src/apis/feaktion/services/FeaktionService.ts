@@ -143,3 +143,30 @@ export const addGenre = async (data: FeaktionInterface.feaktionGenre[]) => {
 
     return result
 }
+
+export const getFeaktionCounts = async (feaktion_id: number) => {
+    const result = {
+        likeCount: 0,
+        commentCount: 0
+    }
+    const commentCount = await prisma.comment.aggregate({
+        where: {
+            feaktion_id
+        },
+        _count: {
+            comment_id: true
+        }
+    })
+
+    const likeCount = await prisma.episode_like.aggregate({
+        where: {
+            feaktion_id
+        },
+        _count: {
+            like_id: true
+        }
+    })
+    result.commentCount = commentCount._count.comment_id
+    result.likeCount = likeCount._count.like_id
+    return result
+}

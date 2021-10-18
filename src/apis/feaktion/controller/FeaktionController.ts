@@ -56,9 +56,11 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
     try {
         const feaktion_id_int = await parseIntParam(feaktion_id)
         const orig_data = await FeaktionService.getFeaktion(feaktion_id_int)
+        const counts = await FeaktionService.getFeaktionCounts(feaktion_id_int)
         if (!orig_data) throw new NotFoundError()
         const data = {
             ...orig_data,
+            ...counts,
             isWriter: orig_data.feaktion_user.user_id == user_id
         }
         apiResponser({ 
