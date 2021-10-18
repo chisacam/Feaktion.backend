@@ -19,10 +19,20 @@ export const createUser = async (data: UserInterface.userSignup): Promise<feakti
     return user
 }
 
-export const isExistUser = async (email: string): Promise<feaktion_user | null> => {
-    const result = await prisma.feaktion_user.findFirst({
+export const isExistEmail = async (email: string): Promise<feaktion_user | null> => {
+    const result = await prisma.feaktion_user.findUnique({
         where: {
             email
+        }
+    })
+
+    return result
+}
+
+export const isExistUser = async ( user_id: number ) => {
+    const result = await prisma.feaktion_user.findUnique({
+        where: {
+            user_id
         }
     })
 

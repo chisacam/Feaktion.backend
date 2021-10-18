@@ -31,7 +31,7 @@ const error_callback = (req: Request, res: Response, next: NextFunction) => {
 }
 router.post('/signup', sign_up_data_check, error_callback, UserController.signup)
 router.post('/signin', sign_in_data_check, error_callback, UserController.signin)
-router.post('/idexistcheck', exist_email_check, error_callback, UserController.isExistId)
+router.post('/idexistcheck', exist_email_check, error_callback, UserController.isExistEmail)
 router.delete('/', authToken, UserController.deleteUser)
 router.get('/', authToken, UserController.getUserInfo)
 router.post('/interest', authToken, UserController.addInterestGenre)

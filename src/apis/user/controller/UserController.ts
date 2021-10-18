@@ -50,7 +50,7 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
     const { email, password } = req.body
 
     try {
-        const check_user = await UserService.isExistUser(email)
+        const check_user = await UserService.isExistEmail(email)
         if (!check_user) throw new NotFoundError()
 
         const isCorrectPassword: boolean = await bcrypt.compare(password, check_user.password)
@@ -75,10 +75,10 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
     }
 }
 
-export const isExistId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const isExistEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { email } = req.body
-        const foundUser = await UserService.isExistUser(email)
+        const foundUser = await UserService.isExistEmail(email)
         if(foundUser) throw new AlreadyExistError()
     
         apiResponser({
@@ -96,8 +96,8 @@ export const isExistId = async (req: Request, res: Response, next: NextFunction)
 export const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { password } = req.body
-        const { user_id, email } = res.locals.userInfo
-        const check_user = await UserService.isExistUser(email)
+        const { user_id } = res.locals.userInfo
+        const check_user = await UserService.isExistUser(user_id)
         if (!check_user) throw new NotFoundError()
 
         const isCorrectPassword: boolean = await bcrypt.compare(password, check_user.password)
