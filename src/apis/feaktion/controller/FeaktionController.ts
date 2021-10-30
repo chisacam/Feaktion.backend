@@ -76,8 +76,9 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
 }
 
 export const getFeaktionMany = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getFeaktionMany()
+        const data = await FeaktionService.getFeaktionMany( user_id )
         if (!data) throw new NotFoundError()
 
         apiResponser({ 
@@ -124,6 +125,47 @@ export const deleteFeaktion = async (req: Request, res: Response, next: NextFunc
             message: 'Delete feaktion 성공' 
         })
     } catch (err) {
+        next(err)
+    }
+}
+
+export const updateFeaktion = async (req, res, next) => {
+    const { feaktion_title, feaktion_description, genres, removed_genres, thumb, tags, removed_tags, feaktion_type, feaktion_pub } = req.body
+    const { feaktion_id } = req.params
+    const { user_id } = res.locals.userInfo
+
+    try {
+        const feaktion_id_int = await parseIntParam(feaktion_id)
+        const data = await FeaktionService.updateFeaktion(feaktion_id_int, { 
+            feaktion_title, 
+            feaktion_description, 
+            thumb, 
+            feaktion_type, 
+            feaktion_pub 
+        })
+        if(!data) throw new Error('something is wrong!')
+
+        await FeaktionService.deleteGenre(removed_genres)
+        await FeaktionService.deleteTag(removed_tags)
+
+        const feaktion_genre = genres.map((genre) => {
+            return {
+                feaktion_id: data.feaktion_id,
+                genre
+            }
+        })
+
+        const feaktion_tag = tags.map((tag) => {
+            return {
+                feaktion_id: data.feaktion_id,
+                tag
+            }
+        })
+        await FeaktionService.addGenre(feaktion_genre)
+
+        await FeaktionService.addTag(feaktion_tag)
+
+    } catch(err) {
         next(err)
     }
 }

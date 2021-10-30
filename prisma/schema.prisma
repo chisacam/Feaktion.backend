@@ -47,17 +47,18 @@ model feaktion_genre {
 }
 
 model episode {
-  episode_id         Int            @id @default(autoincrement())
-  feaktion_id        Int            @default(autoincrement())
-  user_id            Int            @default(autoincrement())
-  episode_title      String         @db.VarChar(50)
+  episode_id         Int               @id @default(autoincrement())
+  feaktion_id        Int               @default(autoincrement())
+  user_id            Int               @default(autoincrement())
+  episode_title      String            @db.VarChar(50)
   scenes             Json
-  episode_uploaddate DateTime       @default(now()) @db.Timestamp(0)
-  episode_updatedate DateTime       @default(now()) @db.Timestamp(0)
-  feaktion           feaktion       @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
-  feaktion_user      feaktion_user  @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  episode_uploaddate DateTime          @default(now()) @db.Timestamp(0)
+  episode_updatedate DateTime          @default(now()) @db.Timestamp(0)
+  feaktion           feaktion          @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
+  feaktion_user      feaktion_user     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   comment            comment[]
   episode_like       episode_like[]
+  reading_history    reading_history[]
 }
 
 model episode_temp_saved {
@@ -88,6 +89,7 @@ model feaktion {
   episode_temp_saved   episode_temp_saved[]
   comment              comment[]
   episode_like         episode_like[]
+  reading_history      reading_history[]
 }
 
 model episode_like {
@@ -151,8 +153,10 @@ model reading_history {
   episode_id    Int           @default(autoincrement())
   feaktion_id   Int           @default(autoincrement())
   user_id       Int           @default(autoincrement())
-  reading_date  DateTime      @db.Timestamp(0)
+  reading_date  DateTime      @default(now()) @db.Timestamp(0)
   feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id])
+  episode       episode       @relation(fields: [episode_id], references: [episode_id])
 }
 
 model viewer_setting {

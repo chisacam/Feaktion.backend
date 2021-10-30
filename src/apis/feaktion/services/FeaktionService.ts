@@ -45,6 +45,12 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
                     episode_uploaddate: true,
                     episode_updatedate: true
                 }
+            },
+            _count: {
+                select: {
+                    comment: true,
+                    episode_like: true
+                }
             }
         },
         where: {
@@ -55,15 +61,73 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
     return result
 }
 
-export const getFeaktionMany = async () => {
-    const result = await prisma.feaktion.findMany({
+export const getFeaktionMany = async ( user_id: number ) => {
+    const genres = await prisma.user_interest.findMany({
+        select: {
+            interest: true
+        },
         where: {
+            user_id
+        }
+    })
+    const user_genres = genres.map((data) => data.interest)
+
+    const recent = await prisma.reading_history.findMany({
+        take: 20,
+        where: {
+            user_id
+        },
+        include: {
+            feaktion: {
+                include: {
+                    feaktion_tag: {
+                        select: {
+                            tag: true
+                        }
+                    }
+                }
+            },
+            feaktion_user: {
+                select: {
+                    nickname: true,
+                    user_id: true,
+                    id: true
+                }
+            }
+        },
+        orderBy: {
+            reading_date: 'desc'
+        }
+    })
+
+    const interest_genres = await prisma.feaktion.findMany({
+        take: 20,
+        where: {
+            feaktion_genre: {
+                some: {
+                    genre: {
+                        in: user_genres
+                    }
+                }
+            }
+        },
+        orderBy: {
+            feaktion_uploaddate: 'desc'
+        }
+    })
+
+    const novels = await prisma.feaktion.findMany({
+        where: {
+            feaktion_type: 'novel',
             feaktion_pub: 'public',
             episode: {
                 some: {
 
                 }
             }
+        },
+        orderBy: {
+            feaktion_uploaddate: 'desc'
         },
         include: {
             feaktion_user: {
@@ -74,6 +138,37 @@ export const getFeaktionMany = async () => {
             }
         }
     })
+
+    const shorts = await prisma.feaktion.findMany({
+        take: 4,
+        where: {
+            feaktion_type: 'short',
+            feaktion_pub: 'public',
+            episode: {
+                some: {
+
+                }
+            }
+        },
+        orderBy: {
+            feaktion_uploaddate: 'desc'
+        },
+        include: {
+            feaktion_user: {
+                select: {
+                    nickname: true,
+                    id: true
+                }
+            }
+        }
+    })
+
+    const result = {
+        recent,
+        interest_genres,
+        novels,
+        shorts
+    }
 
     return result
 }
@@ -136,9 +231,25 @@ export const addTag = async (data: FeaktionInterface.feaktionTag[]) => {
     return result
 }
 
+export const deleteTag = async (data) => {
+    const result = await prisma.feaktion_tag.deleteMany({
+        where: data
+    })
+
+    return result
+}
+
 export const addGenre = async (data: FeaktionInterface.feaktionGenre[]) => {
     const result = await prisma.feaktion_genre.createMany({
         data
+    })
+
+    return result
+}
+
+export const deleteGenre = async (data) => {
+    const result = await prisma.feaktion_genre.deleteMany({
+        where: data
     })
 
     return result

@@ -20,7 +20,7 @@ export const createEpisode = async (data: any): Promise<any> => {
     return result
 }
 
-export const getEpisode = async (episode_id: number, user_id: number): Promise<any> => {
+export const getEpisode = async (feaktion_id: number, episode_id: number, user_id: number): Promise<any> => {
     const result = await prisma.episode.findUnique({
         where: {
             episode_id
@@ -60,6 +60,14 @@ export const getEpisode = async (episode_id: number, user_id: number): Promise<a
                     user_id: true
                 }
             }
+        }
+    })
+
+    await prisma.reading_history.create({
+        data: {
+            feaktion_id,
+            episode_id,
+            user_id,
         }
     })
 

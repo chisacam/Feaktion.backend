@@ -33,12 +33,13 @@ export const postEpisode = async (req: Request, res: Response, next: NextFunctio
 }
 
 export const getEpisode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { episode_id } = req.params
+    const { feaktion_id, episode_id } = req.params
     const { user_id } = res.locals.userInfo
 
     try {
         const episode_id_int = await parseIntParam(episode_id)
-        const orig_data = await EpisodeService.getEpisode(episode_id_int, user_id)
+        const feaktion_id_int = await parseIntParam(feaktion_id)
+        const orig_data = await EpisodeService.getEpisode(feaktion_id_int, episode_id_int, user_id)
         if(!orig_data) throw new NotFoundError()
         const likeCount = await EpisodeService.getEpisodeLikeCount(episode_id_int)
         const data = {
