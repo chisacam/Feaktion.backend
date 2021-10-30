@@ -8,7 +8,7 @@ import { parseIntParam } from '../../../lib/parseParams'
 import { generateToken } from '../../../lib/tokenManager'
 import apiResponser from '../../../middleware/apiResponser'
 
-// 회원가입
+
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { 
         id,
@@ -45,7 +45,6 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     }
 }
 
-// 로그인
 export const signin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { email, password } = req.body
 

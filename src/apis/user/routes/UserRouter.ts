@@ -29,12 +29,216 @@ const error_callback = (req: Request, res: Response, next: NextFunction) => {
     if (!errors.isEmpty()) throw new ValidationFailError()
     next()
 }
+
+/**
+ * @swagger
+ * paths:
+ *   /signup:
+ *     post:
+ *       tags:
+ *       - user
+ *       description: 유저 가입
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
+ *                 nickname:
+ *                   type: string
+ *                 sex:
+ *                   type: string
+ *                 agree_info:
+ *                   type: boolean
+ *                 agree_service:
+ *                   type: boolean
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
 router.post('/signup', sign_up_data_check, error_callback, UserController.signup)
+/**
+ * @swagger
+ *   /signin:
+ *     post:
+ *       tags:
+ *       - user
+ *       description: 유저 로그인
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseLogin'
+ *         '404':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ *         '500':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
 router.post('/signin', sign_in_data_check, error_callback, UserController.signin)
+/**
+ * @swagger
+ *   /idexistcheck:
+ *     post:
+ *       tags:
+ *       - user
+ *       description: 중복 이메일 체크
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 email:
+ *                   type: string
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '500':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
 router.post('/idexistcheck', exist_email_check, error_callback, UserController.isExistEmail)
+/**
+ * @swagger
+ *   /:
+ *     delete:
+ *       tags:
+ *       - user
+ *       description: 회원 탈퇴
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 password:
+ *                   type: string
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '500':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
 router.delete('/', authToken, UserController.deleteUser)
+/**
+ * @swagger
+ *   /:
+ *     get:
+ *       tags:
+ *       - user
+ *       description: 회원 정보 요청
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '404':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
 router.get('/', authToken, UserController.getUserInfo)
+/**
+ * @swagger
+ *   /interest:
+ *     post:
+ *       tags:
+ *       - user
+ *       description: 관심 장르 추가
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 genres:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '500':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
 router.post('/interest', authToken, UserController.addInterestGenre)
+/**
+ * @swagger
+ *   /interest:
+ *     patch:
+ *       tags:
+ *       - user
+ *       description: 관심 장르 수정
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 genres:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 remove_genres:
+ *                   type: array
+ *                   items:
+ *                     type: integer
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '500':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
 router.patch('/interest', authToken, UserController.patchInterestGenre)
 
 export default router

@@ -1,0 +1,33 @@
+components:
+  schemas:
+    ApiResponseLogin:
+      type: object
+      properties:
+        result:
+          type: boolean
+        statusCode:
+          type: integer
+        message: 
+          type: string
+        data: 
+          type: object
+        token: 
+          type: string
+    ApiResponseSuccess:
+      type: object
+      properties:
+        result:
+          type: boolean
+        statusCode:
+          type: integer
+        message: 
+          type: string
+        data: 
+          type: object
+    ApiResponseFail:
+      type: object
+      properties:
+        result:
+          type: boolean
+        message:
+          type: string

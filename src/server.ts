@@ -19,6 +19,10 @@ export const startServer = async (): Promise<void> => {
 
     // Request Router
     app.use(apiRequestLogger)
+    if (process.env.NODE_ENV !== 'production') { 
+        const swaggerUi = await import('./lib/swagger')
+        app.use('/docs', swaggerUi.default.serve, swaggerUi.default.setup(swaggerUi.doc))
+    }
     app.use('/', routes)
 
     //error handler
