@@ -9,14 +9,43 @@ export const postEpisode = async (req: Request, res: Response, next: NextFunctio
     const { episode_title, scenes } = req.body
     const { feaktion_id } = req.params
     const { user_id } = res.locals.userInfo
-    const feaktion_id_int = await parseIntParam(feaktion_id)
+
 
     try {
+        const feaktion_id_int = await parseIntParam(feaktion_id)
         const data = await EpisodeService.createEpisode({
             feaktion_id: feaktion_id_int,
             episode_title,
             scenes,
             user_id
+        })
+
+        apiResponser({
+            req,
+            res,
+            statusCode: 201,
+            result: true,
+            message: '에피소드 생성완료',
+            data
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const updateEpisode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { episode_title, scenes } = req.body
+    const { feaktion_id, episode_id } = req.params
+
+
+    try {
+        const feaktion_id_int = await parseIntParam(feaktion_id)
+        const episode_id_int = await parseIntParam(episode_id)
+        const data = await EpisodeService.updateEpisode(episode_id_int, {
+            feaktion_id: feaktion_id_int,
+            episode_title,
+            scenes,
+            episode_updatedate: new Date()
         })
 
         apiResponser({
@@ -79,7 +108,7 @@ export const deleteEpisode = async (req: Request, res: Response, next: NextFunct
     }
 }
 
-export const addEpisodeLike = async (req: Request, res: Response, next: NextFunction) => {
+export const addEpisodeLike = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { episode_id, feaktion_id } = req.params
     const { user_id } = res.locals.userInfo
 
@@ -100,7 +129,7 @@ export const addEpisodeLike = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const removeEpisodeLike = async(req: Request, res: Response, next: NextFunction) => {
+export const removeEpisodeLike = async(req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { like_id } = req.body
 
     try {

@@ -9,5 +9,6 @@ const router = Router({
 router.patch('/:comment_id', authToken, CommentController.updateComment)
 router.post('/', authToken, CommentController.postComment)
 router.delete('/:comment_id', authToken, CommentController.isCommentWriter, CommentController.deleteComment)
+router.get('/', authToken, CommentController.getCommentMany)
 
 export default router

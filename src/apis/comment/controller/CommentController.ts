@@ -32,6 +32,26 @@ export const postComment = async (req: Request, res: Response, next: NextFunctio
     }
 }
 
+export const getCommentMany = async (req: Request, res: Response, next: NextFunction) => {
+    const { episode_id } = req.params
+
+    try {
+        const episode_id_int = await parseIntParam(episode_id)
+        const data = await CommentService.getCommentMany(episode_id_int)
+
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
+            result: true,
+            message: '댓글 가져오기 완료',
+            data
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
 export const updateComment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { comment_body } = req.body
     const { comment_id } = req.params

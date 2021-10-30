@@ -61,7 +61,8 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
         const data = {
             ...orig_data,
             ...counts,
-            isWriter: orig_data.feaktion_user.user_id == user_id
+            isWriter: orig_data.feaktion_user.user_id == user_id,
+            last_episode_uploaded: orig_data.episode[0].episode_uploaddate
         }
         apiResponser({ 
             req, 
@@ -129,10 +130,9 @@ export const deleteFeaktion = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const updateFeaktion = async (req, res, next) => {
+export const updateFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { feaktion_title, feaktion_description, genres, removed_genres, thumb, tags, removed_tags, feaktion_type, feaktion_pub } = req.body
     const { feaktion_id } = req.params
-    const { user_id } = res.locals.userInfo
 
     try {
         const feaktion_id_int = await parseIntParam(feaktion_id)
@@ -141,7 +141,8 @@ export const updateFeaktion = async (req, res, next) => {
             feaktion_description, 
             thumb, 
             feaktion_type, 
-            feaktion_pub 
+            feaktion_pub,
+            feaktion_updatedate: new Date()
         })
         if(!data) throw new Error('something is wrong!')
 

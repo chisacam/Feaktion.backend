@@ -11,6 +11,28 @@ export const createComment = async (data: any): Promise<any> => {
     return result
 }
 
+export const getCommentMany = async (episode_id: number) => {
+    const result = await prisma.comment.findMany({
+        where: {
+            episode_id
+        },
+        orderBy: {
+            comment_uploaddate: 'desc'
+        },
+        include: {
+            feaktion_user: {
+                select: {
+                    nickname: true,
+                    id: true,
+                    user_id: true
+                }
+            }
+        }
+    })
+
+    return result
+}
+
 export const deleteComment = async (comment_id: number): Promise<any> => {
     const result = await prisma.comment.delete({
         where: {

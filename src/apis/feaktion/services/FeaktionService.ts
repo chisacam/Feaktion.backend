@@ -44,6 +44,9 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
                     episode_title: true,
                     episode_uploaddate: true,
                     episode_updatedate: true
+                },
+                orderBy: {
+                    episode_uploaddate: 'desc'
                 }
             },
             _count: {
@@ -219,7 +222,7 @@ export const updateFeaktion = async (feaktion_id: number, data: any): Promise<fe
         },
         data
     })
-
+    
     return result
 }
 
