@@ -52,6 +52,7 @@ export const deleteUser = async (user_id: number): Promise<feaktion_user | null>
 export const agreement = async (user_id: number, agree_info: boolean, agree_service: boolean): Promise<user_agreement | null> => {
     const result = await prisma.user_agreement.create({
         data: {
+            user_id,
             agree_info,
             agree_service,
         }
