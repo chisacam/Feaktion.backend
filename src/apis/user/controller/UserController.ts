@@ -117,13 +117,15 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 export const addInterestGenre = async (req: Request, res: Response, next: NextFunction) => {
     const { genres } = req.body
     const { user_id } = res.locals.userInfo
-    const interest = genres.map(genre => {
-        return {
-            interest: genre,
-            user_id
-        }
-    })
-    try {    
+
+    try {
+        const interest = genres?.map(genre => {
+            return {
+                interest: genre,
+                user_id
+            }
+        })
+        if(interest) throw new Error('not data in body')
         const data = await UserService.addInterestGenre(interest)
 
         apiResponser({
@@ -140,23 +142,30 @@ export const addInterestGenre = async (req: Request, res: Response, next: NextFu
 }
 
 export const patchInterestGenre = async (req: Request, res: Response, next: NextFunction) => {
-    const { genres, remove_genres } = req.body
+    const { genres, removed_genres } = req.body
     const { user_id } = res.locals.userInfo
-    const interest = genres.map(genre => {
-        return {
-            interest: genre,
-            user_id
-        }
-    })
-    try {    
-        await UserService.removeInterestGenre(remove_genres)
-        const data = await UserService.addInterestGenre(interest)
+
+    try {
+        const interest = genres?.map(genre => {
+            return {
+                interest: genre,
+                user_id
+            }
+        })
+        
+        const wrapped_genres = removed_genres?.map((id) => {
+            return {
+                id
+            }
+        })
+        
+        if(wrapped_genres) await UserService.removeInterestGenre(wrapped_genres)
+        if(interest) await UserService.addInterestGenre(interest)
 
         apiResponser({
             req, 
             res, 
             statusCode: 201, 
-            data, 
             result: true,
             message: '선호장르 수정완료'
         })

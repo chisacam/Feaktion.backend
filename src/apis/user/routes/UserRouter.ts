@@ -223,7 +223,7 @@ router.post('/interest', authToken, UserController.addInterestGenre)
  *                   type: array
  *                   items:
  *                     type: string
- *                 remove_genres:
+ *                 removed_genres:
  *                   type: array
  *                   items:
  *                     type: integer

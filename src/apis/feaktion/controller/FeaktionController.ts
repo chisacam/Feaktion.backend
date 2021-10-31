@@ -56,13 +56,10 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
     try {
         const feaktion_id_int = await parseIntParam(feaktion_id)
         const orig_data = await FeaktionService.getFeaktion(feaktion_id_int)
-        const counts = await FeaktionService.getFeaktionCounts(feaktion_id_int)
         if (!orig_data) throw new NotFoundError()
         const data = {
             ...orig_data,
-            ...counts,
-            isWriter: orig_data.feaktion_user.user_id == user_id,
-            last_episode_uploaded: orig_data.episode[0].episode_uploaddate
+            isWriter: orig_data.feaktion_user.user_id == user_id
         }
         apiResponser({ 
             req, 
@@ -146,26 +143,45 @@ export const updateFeaktion = async (req: Request, res: Response, next: NextFunc
         })
         if(!data) throw new Error('something is wrong!')
 
-        await FeaktionService.deleteGenre(removed_genres)
-        await FeaktionService.deleteTag(removed_tags)
+        const wrapped_genres = removed_genres?.map((id) => {
+            return {
+                id
+            }
+        })
 
-        const feaktion_genre = genres.map((genre) => {
+        const wrapped_tags = removed_tags?.map((id) => {
+            return {
+                id
+            }
+        })
+
+        if(wrapped_genres) await FeaktionService.deleteGenre(wrapped_genres)
+        if(wrapped_tags) await FeaktionService.deleteTag(wrapped_tags)
+
+        const feaktion_genre = genres?.map((genre) => {
             return {
                 feaktion_id: data.feaktion_id,
                 genre
             }
         })
 
-        const feaktion_tag = tags.map((tag) => {
+        const feaktion_tag = tags?.map((tag) => {
             return {
                 feaktion_id: data.feaktion_id,
                 tag
             }
         })
-        await FeaktionService.addGenre(feaktion_genre)
+        
+        if(feaktion_genre) await FeaktionService.addGenre(feaktion_genre)
 
-        await FeaktionService.addTag(feaktion_tag)
-
+        if(feaktion_tag) await FeaktionService.addTag(feaktion_tag)
+        
+        apiResponser({
+            req,
+            res,
+            result: true,
+            message: 'update feaktion 성공'
+        })
     } catch(err) {
         next(err)
     }
@@ -184,7 +200,8 @@ export const isFeaktionWriter = async (req: Request, res: Response, next: NextFu
             req, 
             res,
             result: false, 
-            message: '권한이 없습니다.' })
+            message: '권한이 없습니다.' 
+        })
     } catch (err) {
         next(err)
     }

@@ -68,9 +68,11 @@ export const addInterestGenre = async ( data: any ) => {
     return result
 }
 
-export const removeInterestGenre = async ( where ) => {
+export const removeInterestGenre = async ( data ) => {
     const result = await prisma.user_interest.deleteMany({
-        where
+        where: {
+            OR: data
+        }
     })
 
     return result

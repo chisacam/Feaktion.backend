@@ -30,12 +30,14 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
             },
             feaktion_tag: {
                 select: {
-                    tag: true
+                    tag: true,
+                    id: true
                 }
             },
             feaktion_genre: {
                 select: {
-                    genre: true
+                    genre: true,
+                    id: true
                 }
             },
             episode: {
@@ -236,7 +238,9 @@ export const addTag = async (data: FeaktionInterface.feaktionTag[]) => {
 
 export const deleteTag = async (data) => {
     const result = await prisma.feaktion_tag.deleteMany({
-        where: data
+        where: {
+            OR: data
+        }
     })
 
     return result
@@ -252,7 +256,9 @@ export const addGenre = async (data: FeaktionInterface.feaktionGenre[]) => {
 
 export const deleteGenre = async (data) => {
     const result = await prisma.feaktion_genre.deleteMany({
-        where: data
+        where: {
+            OR: data
+        }
     })
 
     return result

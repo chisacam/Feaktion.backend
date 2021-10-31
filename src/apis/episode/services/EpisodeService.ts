@@ -26,6 +26,9 @@ export const getEpisode = async (feaktion_id: number, episode_id: number, user_i
                             user_id: true
                         }
                     }
+                },
+                orderBy: {
+                    comment_uploaddate: 'desc'
                 }
             },
             episode_like: {
