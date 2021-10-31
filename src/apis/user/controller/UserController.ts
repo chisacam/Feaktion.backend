@@ -21,8 +21,8 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     } = req.body
     
     try {
-        const salt = await parseIntParam(nullStringSafe(process.env.HASH_SALT), 10)
-        const encryptedPassword = await bcrypt.hash(password, salt)
+        const salt: number = await parseIntParam(nullStringSafe(process.env.HASH_SALT), 10)
+        const encryptedPassword: string = await bcrypt.hash(password, salt)
         const data: UserInterface.userSignup = {
             id,
             email,
@@ -55,7 +55,7 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
         const isCorrectPassword: boolean = await bcrypt.compare(password, check_user.password)
         if (!isCorrectPassword) throw new ValidationFailError()
 
-        const token: string = await generateToken(email, check_user.nickname, check_user.user_id)
+        const token: string = await generateToken(check_user.nickname, check_user.user_id)
         res.cookie('feaktion_token', token, {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24 * 30
@@ -158,7 +158,7 @@ export const patchInterestGenre = async (req: Request, res: Response, next: Next
                 id
             }
         })
-        
+
         if(wrapped_genres) await UserService.removeInterestGenre(wrapped_genres)
         if(interest) await UserService.addInterestGenre(interest)
 

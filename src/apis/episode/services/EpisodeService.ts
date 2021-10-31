@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { NotFoundError } from '../../../lib/customErrorClass'
 // import EpisodeInterface from '../interfaces'
 
 const prisma = new PrismaClient()
@@ -51,17 +52,27 @@ export const getEpisode = async (feaktion_id: number, episode_id: number, user_i
                 select: {
                     nickname: true,
                     id: true,
-                    user_id: true
+                    user_id: true,
+                    email: true
                 }
             }
         }
     })
+    if(!result) throw new NotFoundError()
 
-    await prisma.reading_history.create({
-        data: {
+    const reading_id: string = result.feaktion_user.email + '_' + result.feaktion_id + '_' + result.episode_id
+    await prisma.reading_history.upsert({
+        create: {
+            reading_id,
             feaktion_id,
             episode_id,
             user_id,
+        },
+        where: {
+            reading_id
+        },
+        update: {
+            reading_date: new Date()
         }
     })
 
