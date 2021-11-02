@@ -6,7 +6,7 @@ import FeaktionService from '../services'
 
 
 export const postFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { feaktion_title, feaktion_description, genres, thumb, tags, feaktion_type, feaktion_pub } = req.body
+    const { feaktion_title, feaktion_description, genres, feaktion_thumbnail, tags, feaktion_type, feaktion_pub } = req.body
     const { user_id } = res.locals.userInfo
 
     try {
