@@ -5,12 +5,12 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "dev": "nodemon",
     "dist": "tsc",
     "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "lint:init": "eslint --init",
-    "deploy:install": "yarn && nodemon src/app.ts",
+    "deploy:install": "yarn && nodemon",
     "prepare": "husky install"
   },
   "devDependencies": {
