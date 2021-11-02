@@ -32,7 +32,14 @@ const router = Router({
  *                 scenes:
  *                   type: array
  *                   items:
- *                     type: string
+ *                     type: object
+ *                     properties:
+ *                       title:
+ *                         type: string
+ *                       scene:
+ *                         type: string
+ *                       image:
+ *                         type: string
  *       responses:
  *         '200':
  *           content:
@@ -133,7 +140,14 @@ router.delete('/:episode_id', authToken, FeaktionController.isFeaktionWriter, Ep
  *                 scenes:
  *                   type: array
  *                   items:
- *                     type: string
+ *                     type: object
+ *                     properties:
+ *                       title:
+ *                         type: string
+ *                       scene:
+ *                         type: string
+ *                       image:
+ *                         type: string
  *       responses:
  *         '200':
  *           content:
