@@ -11,7 +11,7 @@ const router = Router({
 /**
  * @swagger
  * paths:
- *   /feaktion/{feaktionId}/episode:
+ *   /feaktion/{feaktion_id}/episode:
  *     post:
  *       tags:
  *       - episode
