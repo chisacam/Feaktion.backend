@@ -120,7 +120,7 @@ router.get('/:feaktion_id', authToken, FeaktionController.getFeaktion)
  *     delete:
  *       tags:
  *       - feaktion
- *       description: feaktion 삭제제
+ *       description: feaktion 삭제
  *       parameters:
  *       - in: path
  *         name: feaktion_id
@@ -145,7 +145,7 @@ router.delete('/:feaktion_id', authToken, FeaktionController.isFeaktionWriter, F
  *     patch:
  *       tags:
  *       - feaktion
- *       description: feaktion 수정, 수정된 값만 포함해서 전송송
+ *       description: feaktion 수정, 수정된 값만 포함해서 전송
  *       requestBody:
  *         content:
  *           application/json:
