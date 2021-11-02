@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express'
-import UserRouter from './user/routes'
+import UserRouter from './user/routers'
 import FeaktionRouter from './feaktion/routers'
 import apiResponser from '../middleware/apiResponser'
 const router = Router()

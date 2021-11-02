@@ -52,7 +52,7 @@ const options: swaggerJSDoc.Options = {
     },
     // api 파일 경로는 항상 프로젝트 루트를 기준으로 할 것
     apis: [
-        './src/apis/**/routes/*Router.ts',
+        './src/apis/**/routers/*Router.ts',
         './src/swagger/*.yaml'
     ]
 }
