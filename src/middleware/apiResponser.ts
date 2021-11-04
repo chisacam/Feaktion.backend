@@ -29,7 +29,7 @@ export default ({
     }
 
     res.locals.payload = payload
-    res.set('Cache-Control', 'no-store')
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate')
     res.status(statusCode).json(payload)
 
     apiResponseLogger({ req, res })
