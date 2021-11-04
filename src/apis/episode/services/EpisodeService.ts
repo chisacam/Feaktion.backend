@@ -52,15 +52,14 @@ export const getEpisode = async (feaktion_id: number, episode_id: number, user_i
                 select: {
                     nickname: true,
                     id: true,
-                    user_id: true,
-                    email: true
+                    user_id: true
                 }
             }
         }
     })
     if(!result) throw new NotFoundError()
 
-    const reading_id: string = result.feaktion_user.email + '_' + result.feaktion_id + '_' + result.episode_id
+    const reading_id: string = user_id + '_' + result.feaktion_id + '_' + result.episode_id
     await prisma.reading_history.upsert({
         create: {
             reading_id,

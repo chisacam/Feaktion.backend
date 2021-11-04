@@ -1,35 +1,38 @@
 import { NextFunction, Request, Response } from 'express'
 import { logger } from '../lib/logger'
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction): unknown => {
+export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
     
     switch (err.name) {
     case 'NotFound':
-        return res.status(404).json({
+        res.status(404).json({
             result: false,
             message: err.message || 'Not Found',
         })
+        break
     case 'ValidationFail':
-        return res.status(400).json({
+        res.status(400).json({
             result: false,
             message: err.message || 'Validation Fail',
         })
+        break
     case 'AlreadyExist':
-        return res.status(400).json({
+        res.status(400).json({
             result: false,
             message: err.message || 'Already Exist'
         })
+        break
     case 'AuthError':
-        return res.status(401).json({
+        res.status(401).json({
             result: false,
             message: err.message || 'Auth Error'
         })
+        break
     default:
         res.status(500).json({
             result: false,
             message: err.message || 'server error',
         })
         logger.error(err.stack)
-        return next(err)
     }
 }
