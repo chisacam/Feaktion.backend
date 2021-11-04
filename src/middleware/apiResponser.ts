@@ -29,6 +29,7 @@ export default ({
     }
 
     res.locals.payload = payload
+    res.set('Cache-Control', 'no-store')
     res.status(statusCode).json(payload)
 
     apiResponseLogger({ req, res })
