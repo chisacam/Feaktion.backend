@@ -68,7 +68,47 @@ router.post('/', authToken, FeaktionController.postFeaktion)
  *               schema:
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
-router.get('/', authToken, FeaktionController.getFeaktionMany)
+router.get('/', authToken, FeaktionController.getFeaktionManyforMain)
+/**
+ * @swagger
+ *   /feaktion/novels:
+ *     get:
+ *       tags:
+ *       - feaktion
+ *       description: novel feaktion 리스트
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/novels', authToken, FeaktionController.getFeaktionManyforMoreNovels)
+/**
+ * @swagger
+ *   /feaktion/shorts:
+ *     get:
+ *       tags:
+ *       - feaktion
+ *       description: short feaktion 리스트
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/shorts', authToken, FeaktionController.getFeaktionManyforMoreShorts)
 /**
  * @swagger
  *   /feaktion/myfeaktions:
@@ -182,6 +222,56 @@ router.delete('/:feaktion_id', authToken, FeaktionController.isFeaktionWriter, F
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
 router.patch('/:feaktion_id', authToken, FeaktionController.isFeaktionWriter, FeaktionController.updateFeaktion)
+/**
+ * @swagger
+ *   /feaktion/{feaktion_id}/favorite:
+ *     post:
+ *       tags:
+ *       - feaktion
+ *       description: feaktion 즐겨찾기 추가
+ *       parameters:
+ *       - in: path
+ *         name: feaktion_id
+ *         required: true
+ *         type: number
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.post( '/:feaktion_id/favorite', authToken, FeaktionController.addFavorite)
+/**
+ * @swagger
+ *   /feaktion/{feaktion_id}/favorite:
+ *     delete:
+ *       tags:
+ *       - feaktion
+ *       description: feaktion 즐겨찾기 제거거
+ *       parameters:
+ *       - in: path
+ *         name: feaktion_id
+ *         required: true
+ *         type: number
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.delete( '/:feaktion_id/favorite', authToken, FeaktionController.deleteFavorite)
 router.use('/:feaktion_id/episode', EpisodeRouter)
 
 export default router

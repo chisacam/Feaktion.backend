@@ -90,6 +90,7 @@ model feaktion {
   comment              comment[]
   episode_like         episode_like[]
   reading_history      reading_history[]
+  favorite_feaktion    favorite_feaktion[]
 }
 
 model episode_like {
@@ -122,6 +123,7 @@ model feaktion_user {
   user_profile       user_profile[]
   episode_temp_saved episode_temp_saved[]
   episode            episode[]
+  favorite_feaktion  favorite_feaktion[]
 }
 
 model user_interest {
@@ -169,4 +171,13 @@ model viewer_setting {
   line_space        Int?
   background_color  String?       @db.VarChar(20)
   feaktion_user     feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+}
+
+model favorite_feaktion {
+  id            String        @id
+  feaktion_id   Int
+  user_id       Int
+  added_date    DateTime      @default(now()) @db.Timestamp(0)
+  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id])
+  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id])
 }

@@ -73,10 +73,10 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
     }
 }
 
-export const getFeaktionMany = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getFeaktionManyforMain = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getFeaktionMany( user_id )
+        const data = await FeaktionService.getFeaktionManyforMain( user_id )
         if (!data) throw new NotFoundError()
 
         apiResponser({ 
@@ -85,6 +85,42 @@ export const getFeaktionMany = async (req: Request, res: Response, next: NextFun
             result: true,
             data, 
             message: 'Get feaktions 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { user_id } = res.locals.userInfo
+    try {
+        const data = await FeaktionService.getFeaktionManyforMoreNovels()
+        if (!data) throw new NotFoundError()
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Get novel feaktions 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const getFeaktionManyforMoreShorts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { user_id } = res.locals.userInfo
+    try {
+        const data = await FeaktionService.getFeaktionManyforMoreShorts()
+        if (!data) throw new NotFoundError()
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Get shrot feaktions 성공' 
         })
     } catch(err) {
         next(err)
@@ -203,6 +239,47 @@ export const isFeaktionWriter = async (req: Request, res: Response, next: NextFu
             message: '권한이 없습니다.' 
         })
     } catch (err) {
+        next(err)
+    }
+}
+
+export const addFavorite = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { feaktion_id } = req.params
+    const { user_id } = res.locals.userInfo
+
+    try {
+        const feaktion_id_int = await parseIntParam(feaktion_id)
+        const data = await FeaktionService.addFavorite(feaktion_id_int, user_id)
+
+        if (!data) throw new NotFoundError()
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Add favorite feaktion 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const deleteFavorite = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { feaktion_id } = req.params
+    const { user_id } = res.locals.userInfo
+
+    try {
+        const feaktion_id_int = await parseIntParam(feaktion_id)
+        await FeaktionService.deleteFavorite(user_id + '_' + feaktion_id_int)
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            message: 'Delete favorite feaktion 성공' 
+        })
+    } catch(err) {
         next(err)
     }
 }
