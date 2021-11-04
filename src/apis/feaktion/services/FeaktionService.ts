@@ -54,7 +54,8 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
             _count: {
                 select: {
                     comment: true,
-                    episode_like: true
+                    episode_like: true,
+                    episode: true
                 }
             }
         },
@@ -102,7 +103,8 @@ export const getFeaktionMany = async ( user_id: number ) => {
         },
         orderBy: {
             reading_date: 'desc'
-        }
+        },
+        distinct: ['feaktion_id']
     })
 
     const interest_genres = await prisma.feaktion.findMany({
