@@ -52,7 +52,7 @@ const router = Router({
  *               schema:
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
-router.post('/', authToken, EpisodeController.postEpisode)
+router.post('/', authToken, FeaktionController.isFeaktionWriter, EpisodeController.postEpisode)
 /**
  * @swagger
  *   /feaktion/{feaktion_id}/episode/{episode_id}:
