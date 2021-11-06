@@ -131,6 +131,26 @@ router.get('/shorts', authToken, FeaktionController.getFeaktionManyforMoreShorts
 router.get('/myfeaktions', authToken, FeaktionController.getMyFeaktionMany)
 /**
  * @swagger
+ *   /feaktion/favorite:
+ *     get:
+ *       tags:
+ *       - feaktion
+ *       description: 즐겨찾기 feaktion 리스트
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/favorite', authToken, FeaktionController.getFavorite)
+/**
+ * @swagger
  *   /feaktion/{feaktion_id}:
  *     get:
  *       tags:

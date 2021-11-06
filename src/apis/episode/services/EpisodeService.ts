@@ -54,6 +54,12 @@ export const getEpisode = async (feaktion_id: number, episode_id: number, user_i
                     id: true,
                     user_id: true
                 }
+            },
+            _count: {
+                select: {
+                    comment: true,
+                    episode_like: true
+                }
             }
         }
     })

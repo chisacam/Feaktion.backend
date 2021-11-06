@@ -11,7 +11,7 @@ export const createFeaktion = async (data: FeaktionInterface.feaktionData): Prom
     return result
 }
 
-export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterface.feaktionResponse | null> => {
+export const getFeaktion = async (feaktion_id: number, user_id: number): Promise<FeaktionInterface.feaktionResponse | null> => {
     const result = await prisma.feaktion.findUnique({
         select: {
             feaktion_title: true,
@@ -55,7 +55,22 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
                 select: {
                     comment: true,
                     episode_like: true,
-                    episode: true
+                    episode: true,
+                    favorite_feaktion: true
+                }
+            },
+            favorite_feaktion: {
+                where: {
+                    user_id
+                },
+                include: {
+                    feaktion_user: {
+                        select: {
+                            id: true,
+                            nickname: true,
+                            user_id: true
+                        }
+                    }
                 }
             }
         },
@@ -67,7 +82,7 @@ export const getFeaktion = async (feaktion_id: number): Promise<FeaktionInterfac
     return result
 }
 
-export const getFeaktionManyforMoreNovels = async () => {
+export const getFeaktionManyforMoreNovels = async ( user_id: number ) => {
     const novels = await prisma.feaktion.findMany({
         select: {
             feaktion_id: true,
@@ -96,6 +111,20 @@ export const getFeaktionManyforMoreNovels = async () => {
                 orderBy: {
                     episode_uploaddate: 'desc'
                 }
+            },
+            favorite_feaktion: {
+                where: {
+                    user_id
+                },
+                include: {
+                    feaktion_user: {
+                        select: {
+                            id: true,
+                            nickname: true,
+                            user_id: true
+                        }
+                    }
+                }
             }
         },
         where: {
@@ -115,7 +144,7 @@ export const getFeaktionManyforMoreNovels = async () => {
     return novels
 }
 
-export const getFeaktionManyforMoreShorts = async () => {
+export const getFeaktionManyforMoreShorts = async ( user_id: number) => {
     const shorts = await prisma.feaktion.findMany({
         select: {
             feaktion_id: true,
@@ -143,6 +172,20 @@ export const getFeaktionManyforMoreShorts = async () => {
                 },
                 orderBy: {
                     episode_uploaddate: 'desc'
+                }
+            },
+            favorite_feaktion: {
+                where: {
+                    user_id
+                },
+                include: {
+                    feaktion_user: {
+                        select: {
+                            id: true,
+                            nickname: true,
+                            user_id: true
+                        }
+                    }
                 }
             }
         },
@@ -246,6 +289,20 @@ export const getFeaktionManyforMain = async ( user_id: number ) => {
                 },
                 orderBy: {
                     episode_uploaddate: 'desc'
+                }
+            },
+            favorite_feaktion: {
+                where: {
+                    user_id
+                },
+                include: {
+                    feaktion_user: {
+                        select: {
+                            id: true,
+                            nickname: true,
+                            user_id: true
+                        }
+                    }
                 }
             }
         },
@@ -435,6 +492,61 @@ export const deleteFavorite = async (id: string) => {
     const result = await prisma.favorite_feaktion.delete({
         where: {
             id
+        }
+    })
+
+    return result
+}
+
+export const getFavorite = async (user_id: number) => {
+    const result = await prisma.favorite_feaktion.findMany({
+        where: {
+            user_id
+        },
+        include: {
+            feaktion: {
+                select: {
+                    feaktion_id: true,
+                    feaktion_title: true,
+                    feaktion_thumb: true,
+                    feaktion_description: true,
+                    feaktion_uploaddate: true,
+                    feaktion_user: {
+                        select: {
+                            id: true,
+                            nickname: true,
+                            user_id: true
+                        }
+                    },
+                    favorite_feaktion: {
+                        where: {
+                            user_id
+                        },
+                        include: {
+                            feaktion_user: {
+                                select: {
+                                    nickname: true,
+                                    id: true,
+                                    user_id: true
+                                }
+                            }
+                        }
+                    },
+                    episode: {
+                        take: 1,
+                        select: {
+                            episode_uploaddate: true
+                        }
+                    },
+                    _count: {
+                        select: {
+                            episode: true,
+                            favorite_feaktion: true,
+                            comment: true
+                        }
+                    }
+                }
+            }
         }
     })
 

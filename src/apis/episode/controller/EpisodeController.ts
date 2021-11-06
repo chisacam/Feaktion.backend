@@ -70,10 +70,9 @@ export const getEpisode = async (req: Request, res: Response, next: NextFunction
         const feaktion_id_int = await parseIntParam(feaktion_id)
         const orig_data = await EpisodeService.getEpisode(feaktion_id_int, episode_id_int, user_id)
         if(!orig_data) throw new NotFoundError()
-        const likeCount = await EpisodeService.getEpisodeLikeCount(episode_id_int)
         const data = {
             ...orig_data,
-            likeCount
+            isWriter: orig_data.feaktion_user.user_id == user_id
         }
         apiResponser({
             req,

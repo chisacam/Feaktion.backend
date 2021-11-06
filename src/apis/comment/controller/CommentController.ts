@@ -34,10 +34,19 @@ export const postComment = async (req: Request, res: Response, next: NextFunctio
 
 export const getCommentMany = async (req: Request, res: Response, next: NextFunction) => {
     const { episode_id } = req.params
+    const { user_id } = res.locals.userInfo
 
     try {
         const episode_id_int = await parseIntParam(episode_id)
-        const data = await CommentService.getCommentMany(episode_id_int)
+        const orig_data = await CommentService.getCommentMany(episode_id_int)
+        if(!orig_data) throw new NotFoundError()
+
+        const data = orig_data.map(item => {
+            return {
+                ...item,
+                isWriter: item.feaktion_user.user_id == user_id
+            }
+        })
 
         apiResponser({
             req,

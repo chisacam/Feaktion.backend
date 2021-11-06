@@ -55,7 +55,7 @@ export const getFeaktion = async (req: Request, res: Response, next: NextFunctio
 
     try {
         const feaktion_id_int = await parseIntParam(feaktion_id)
-        const orig_data = await FeaktionService.getFeaktion(feaktion_id_int)
+        const orig_data = await FeaktionService.getFeaktion(feaktion_id_int, user_id)
         if (!orig_data) throw new NotFoundError()
         const data = {
             ...orig_data,
@@ -94,7 +94,7 @@ export const getFeaktionManyforMain = async (req: Request, res: Response, next: 
 export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getFeaktionManyforMoreNovels()
+        const data = await FeaktionService.getFeaktionManyforMoreNovels(user_id)
         if (!data) throw new NotFoundError()
 
         apiResponser({ 
@@ -112,7 +112,7 @@ export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, 
 export const getFeaktionManyforMoreShorts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getFeaktionManyforMoreShorts()
+        const data = await FeaktionService.getFeaktionManyforMoreShorts(user_id)
         if (!data) throw new NotFoundError()
 
         apiResponser({ 
@@ -278,6 +278,24 @@ export const deleteFavorite = async (req: Request, res: Response, next: NextFunc
             res, 
             result: true,
             message: 'Delete favorite feaktion 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const getFavorite = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { user_id } = res.locals.userInfo
+    try {
+        const data = await FeaktionService.getFavorite(user_id)
+        if (!data) throw new NotFoundError()
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Get favorite feaktion 성공' 
         })
     } catch(err) {
         next(err)
