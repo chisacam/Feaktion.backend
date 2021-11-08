@@ -125,7 +125,7 @@ export const getReadedFeaktion = async (user_id: number, take?: number) => {
     return result
 }
 
-export const getInterestFeaktion = async (user_id: number, take?: number) => {
+export const getInterestGenreFeaktion = async (user_id: number, take?: number) => {
     const genres = await prisma.user_interest.findMany({
         select: {
             interest: true
@@ -295,7 +295,7 @@ export const getFeaktionManyforMain = async ( user_id: number ) => {
 
     const recent = await getReadedFeaktion(user_id, 20)
 
-    const interest_genres = await getInterestFeaktion(user_id, 20)
+    const interest_genres = await getInterestGenreFeaktion(user_id, 20)
 
     const novels = await getFeaktionManyforMoreNovels(user_id)
 

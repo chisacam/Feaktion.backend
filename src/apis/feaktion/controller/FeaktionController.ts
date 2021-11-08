@@ -301,3 +301,39 @@ export const getFavorite = async (req: Request, res: Response, next: NextFunctio
         next(err)
     }
 }
+
+export const getReadedFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { user_id } = res.locals.userInfo
+    try {
+        const data = await FeaktionService.getReadedFeaktion(user_id)
+        if (!data) throw new NotFoundError()
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Get readed feaktion 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const getInterestGenreFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { user_id } = res.locals.userInfo
+    try {
+        const data = await FeaktionService.getInterestGenreFeaktion(user_id)
+        if (!data) throw new NotFoundError()
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Get interest feaktion 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}

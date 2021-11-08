@@ -178,6 +178,46 @@ router.get('/favorite', authToken, FeaktionController.getFavorite)
 router.delete('/favorite', authToken, FeaktionController.deleteFavorite)
 /**
  * @swagger
+ *   /feaktion/readed:
+ *     get:
+ *       tags:
+ *       - feaktion
+ *       description: 읽은 feaktion 리스트
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/readed', authToken, FeaktionController.getReadedFeaktion)
+/**
+ * @swagger
+ *   /feaktion/interestgenre:
+ *     get:
+ *       tags:
+ *       - feaktion
+ *       description: 이용자가 선호하는 장르 feaktion 리스트
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/interestgenre', authToken, FeaktionController.getInterestGenreFeaktion)
+/**
+ * @swagger
  *   /feaktion/{feaktion_id}:
  *     get:
  *       tags:
