@@ -151,7 +151,7 @@ model user_profile {
 }
 
 model reading_history {
-  reading_id    String        @id
+  reading_id    Int           @id @default(autoincrement())
   episode_id    Int
   feaktion_id   Int
   user_id       Int
@@ -174,7 +174,7 @@ model viewer_setting {
 }
 
 model favorite_feaktion {
-  id            String        @id
+  id            Int           @id @default(autoincrement())
   feaktion_id   Int
   user_id       Int
   added_date    DateTime      @default(now()) @db.Timestamp(0)

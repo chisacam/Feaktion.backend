@@ -266,12 +266,12 @@ export const addFavorite = async (req: Request, res: Response, next: NextFunctio
 }
 
 export const deleteFavorite = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { feaktion_id } = req.params
     const { user_id } = res.locals.userInfo
+    const { favorite_id } = req.body
 
     try {
-        const feaktion_id_int = await parseIntParam(feaktion_id)
-        await FeaktionService.deleteFavorite(user_id + '_' + feaktion_id_int)
+        const favorite_id_int = await parseIntParam(favorite_id)
+        await FeaktionService.deleteFavorite(favorite_id_int)
 
         apiResponser({ 
             req, 

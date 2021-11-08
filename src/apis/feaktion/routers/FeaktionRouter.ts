@@ -151,6 +151,33 @@ router.get('/myfeaktions', authToken, FeaktionController.getMyFeaktionMany)
 router.get('/favorite', authToken, FeaktionController.getFavorite)
 /**
  * @swagger
+ *   /feaktion/favorite:
+ *     delete:
+ *       tags:
+ *       - feaktion
+ *       description: feaktion 즐겨찾기 제거
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 favorite_id:
+ *                   type: number
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.delete('/favorite', authToken, FeaktionController.deleteFavorite)
+/**
+ * @swagger
  *   /feaktion/{feaktion_id}:
  *     get:
  *       tags:
@@ -266,32 +293,7 @@ router.patch('/:feaktion_id', authToken, FeaktionController.isFeaktionWriter, Fe
  *               schema:
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
-router.post( '/:feaktion_id/favorite', authToken, FeaktionController.addFavorite)
-/**
- * @swagger
- *   /feaktion/{feaktion_id}/favorite:
- *     delete:
- *       tags:
- *       - feaktion
- *       description: feaktion 즐겨찾기 제거거
- *       parameters:
- *       - in: path
- *         name: feaktion_id
- *         required: true
- *         type: number
- *       responses:
- *         '200':
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#/components/schemas/ApiResponseSuccess'
- *         '400':
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#/components/schemas/ApiResponseFail'
- */
-router.delete( '/:feaktion_id/favorite', authToken, FeaktionController.deleteFavorite)
+router.post('/:feaktion_id/favorite', authToken, FeaktionController.addFavorite)
 router.use('/:feaktion_id/episode', EpisodeRouter)
 
 export default router

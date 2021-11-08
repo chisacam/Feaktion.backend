@@ -29,5 +29,6 @@ components:
       properties:
         result:
           type: boolean
+          example: false
         message:
           type: string
