@@ -56,7 +56,8 @@ export const getFeaktion = async (feaktion_id: number, user_id: number): Promise
                     comment: true,
                     episode_like: true,
                     episode: true,
-                    favorite_feaktion: true
+                    favorite_feaktion: true,
+                    reading_history: true
                 }
             },
             favorite_feaktion: {
@@ -95,14 +96,23 @@ export const getReadedFeaktion = async (user_id: number, take?: number) => {
                         select: {
                             tag: true
                         }
+                    },
+                    feaktion_user: {
+                        select: {
+                            id: true,
+                            nickname: true,
+                            user_id: true
+                        }
+                    },
+                    _count: {
+                        select: {
+                            comment: true,
+                            episode: true,
+                            episode_like: true,
+                            favorite_feaktion: true,
+                            reading_history: true
+                        }
                     }
-                }
-            },
-            feaktion_user: {
-                select: {
-                    nickname: true,
-                    user_id: true,
-                    id: true
                 }
             }
         },
@@ -136,6 +146,15 @@ export const getInterestFeaktion = async (user_id: number, take?: number) => {
                 }
             }
         },
+        include: {
+            feaktion_user: {
+                select: {
+                    id: true,
+                    nickname: true,
+                    user_id: true
+                }
+            }
+        },
         orderBy: {
             feaktion_uploaddate: 'desc'
         }
@@ -163,7 +182,8 @@ export const getFeaktionManyforMoreNovels = async ( user_id: number, take?: numb
                     episode: true,
                     episode_like: true,
                     favorite_feaktion: true,
-                    comment: true
+                    comment: true,
+                    reading_history: true
                 }
             },
             episode: {
@@ -226,7 +246,8 @@ export const getFeaktionManyforMoreShorts = async ( user_id: number, take?: numb
                     episode: true,
                     episode_like: true,
                     favorite_feaktion: true,
-                    comment: true
+                    comment: true,
+                    reading_history: true
                 }
             },
             episode: {
