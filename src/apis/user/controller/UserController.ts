@@ -187,6 +187,55 @@ export const getUserInfo = async (req, res, next) => {
         })
     } catch(err) {
         next(err)
+    }   
+}
+
+export const updateUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+    const { user_id } = res.locals.userInfo
+    const { nickname, profile, intro } = req.body
+
+    try {
+        await UserService.updateProfile(user_id, {
+            nickname,
+            profile,
+            intro
+        })
+
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
+            result: true,
+            message: '유저 정보 수정완료'
+        })
+    } catch(err) {
+        next(err)
     }
-    
+}
+
+export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
+    const { user_id } = res.locals.userInfo
+    const { password, new_password } = req.body
+
+    try {
+        const check_user = await UserService.isExistUser(user_id)
+        if (!check_user) throw new NotFoundError()
+
+        const isCorrectPassword: boolean = await bcrypt.compare(password, check_user.password)
+        if (!isCorrectPassword) throw new ValidationFailError()
+
+        const salt = await parseIntParam(nullStringSafe(process.env.HASH_SALT), 10)
+        const encryptedPassword: string = await bcrypt.hash(new_password, salt)
+        await UserService.changePassword(user_id, encryptedPassword)
+
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
+            result: true,
+            message: '비밀번호 변경완료'
+        })
+    } catch(err) {
+        next(err)
+    }
 }

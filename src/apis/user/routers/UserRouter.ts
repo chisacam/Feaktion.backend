@@ -180,6 +180,66 @@ router.delete('/', authToken, UserController.deleteUser)
 router.get('/', authToken, UserController.getUserInfo)
 /**
  * @swagger
+ *   /:
+ *     patch:
+ *       tags:
+ *       - user
+ *       description: 회원 정보 수정
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 nickname:
+ *                   type: string
+ *                 profile:
+ *                   type: string
+ *                 intro:
+ *                   type: string
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '500':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.patch('/', authToken, UserController.updateUserProfile)
+/**
+ * @swagger
+ *   /changepassword:
+ *     patch:
+ *       tags:
+ *       - user 
+ *       description: 비밀번호 변경
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 password:
+ *                   type: string
+ *                 new_password:
+ *                   type: string
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '500':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.patch('/changepassword', authToken, UserController.changePassword)
+/**
+ * @swagger
  *   /interest:
  *     post:
  *       tags:

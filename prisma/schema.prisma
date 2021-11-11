@@ -52,6 +52,7 @@ model episode {
   user_id            Int
   episode_title      String            @db.VarChar(50)
   scenes             Json
+  writer_comment     String
   episode_uploaddate DateTime          @default(now()) @db.Timestamp(0)
   episode_updatedate DateTime          @default(now()) @db.Timestamp(0)
   feaktion           feaktion          @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
@@ -62,14 +63,15 @@ model episode {
 }
 
 model episode_temp_saved {
-  id            Int           @id @default(autoincrement())
-  user_id       Int
-  feaktion_id   Int
-  title         String        @db.VarChar(50)
-  scenes        Json
-  saved_date    DateTime      @default(now()) @db.Timestamp(0)
-  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
-  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  id             Int           @id @default(autoincrement())
+  user_id        Int
+  feaktion_id    Int
+  title          String        @db.VarChar(50)
+  scenes         Json
+  writer_comment String
+  saved_date     DateTime      @default(now()) @db.Timestamp(0)
+  feaktion       feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
+  feaktion_user  feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 
 model feaktion {
@@ -111,6 +113,8 @@ model feaktion_user {
   password           String               @db.VarChar(100)
   nickname           String               @db.VarChar(50)
   sex                String               @db.VarChar(10)
+  profile            String?              @db.VarChar(50)
+  intro              String?              @db.VarChar(100)
   regdate            DateTime             @default(now()) @db.Timestamp(0)
   comment            comment[]
   feaktion           feaktion[]
@@ -120,7 +124,6 @@ model feaktion_user {
   reply              reply[]
   user_interest      user_interest[]
   user_agreement     user_agreement[]
-  user_profile       user_profile[]
   episode_temp_saved episode_temp_saved[]
   episode            episode[]
   favorite_feaktion  favorite_feaktion[]
@@ -139,14 +142,6 @@ model user_agreement {
   agree_service Boolean
   agree_info    Boolean
   agree_date    DateTime      @default(now()) @db.Timestamp(0)
-  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
-}
-
-model user_profile {
-  id            Int           @id @default(autoincrement())
-  user_id       Int
-  profile       String?       @db.VarChar(50)
-  intro         String?       @db.VarChar(100)
   feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 

@@ -27,7 +27,6 @@ const router = Router({
  *       responses:
  *         '200':
  *           content:
- *             description: Success
  *             application/json:
  *               schema:
  *                 $ref: '#/components/schemas/ApiResponseSuccess'

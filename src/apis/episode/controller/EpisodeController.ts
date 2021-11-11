@@ -6,7 +6,7 @@ import EpisodeService from '../services'
 
 
 export const postEpisode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { episode_title, scenes } = req.body
+    const { episode_title, scenes, writer_comment } = req.body
     const { feaktion_id } = req.params
     const { user_id } = res.locals.userInfo
 
@@ -17,7 +17,8 @@ export const postEpisode = async (req: Request, res: Response, next: NextFunctio
             feaktion_id: feaktion_id_int,
             episode_title,
             scenes,
-            user_id
+            user_id,
+            writer_comment
         })
 
         apiResponser({

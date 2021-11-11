@@ -1,6 +1,5 @@
 import UserInterface from '../interfaces'
-import { PrismaClient } from '@prisma/client'
-import { feaktion_user, user_agreement } from '.prisma/client'
+import { feaktion_user, user_agreement, PrismaClient } from '@prisma/client'
 
 
 const prisma = new PrismaClient()
@@ -85,10 +84,34 @@ export const getUserInfo = async ( user_id ) => {
             user_id
         },
         include: {
-            user_interest: true,
-            user_profile: true
+            user_interest: true
         }
     })
 
     return result
 }
+
+export const updateProfile = async ( user_id: number, data: any ) => {
+    const result = await prisma.feaktion_user.update({
+        where: {
+            user_id
+        },
+        data
+    })
+
+    return result
+}
+
+export const changePassword = async ( user_id: number, password: string ) => {
+    const result = await prisma.feaktion_user.update({
+        where: {
+            user_id
+        },
+        data: {
+            password
+        }
+    })
+
+    return result
+}
+
