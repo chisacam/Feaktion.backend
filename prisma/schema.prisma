@@ -52,7 +52,7 @@ model episode {
   user_id            Int
   episode_title      String            @db.VarChar(50)
   scenes             Json
-  writer_comment     String
+  writer_comment     String?
   episode_uploaddate DateTime          @default(now()) @db.Timestamp(0)
   episode_updatedate DateTime          @default(now()) @db.Timestamp(0)
   feaktion           feaktion          @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
@@ -68,7 +68,7 @@ model episode_temp_saved {
   feaktion_id    Int
   title          String        @db.VarChar(50)
   scenes         Json
-  writer_comment String
+  writer_comment String?
   saved_date     DateTime      @default(now()) @db.Timestamp(0)
   feaktion       feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
   feaktion_user  feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
