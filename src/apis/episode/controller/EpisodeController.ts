@@ -4,7 +4,6 @@ import { parseIntParam } from '../../../lib/parseParams'
 import apiResponser from '../../../middleware/apiResponser'
 import EpisodeService from '../services'
 
-
 export const postEpisode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { episode_title, scenes, writer_comment } = req.body
     const { feaktion_id } = req.params
@@ -35,7 +34,7 @@ export const postEpisode = async (req: Request, res: Response, next: NextFunctio
 }
 
 export const updateEpisode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { episode_title, scenes } = req.body
+    const { episode_title, scenes, writer_comment } = req.body
     const { feaktion_id, episode_id } = req.params
 
 
@@ -46,7 +45,8 @@ export const updateEpisode = async (req: Request, res: Response, next: NextFunct
             feaktion_id: feaktion_id_int,
             episode_title,
             scenes,
-            episode_updatedate: new Date()
+            episode_updatedate: new Date(),
+            writer_comment
         })
 
         apiResponser({

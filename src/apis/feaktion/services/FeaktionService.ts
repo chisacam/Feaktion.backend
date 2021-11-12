@@ -45,7 +45,8 @@ export const getFeaktion = async (feaktion_id: number, user_id: number): Promise
                     episode_id: true,
                     episode_title: true,
                     episode_uploaddate: true,
-                    episode_updatedate: true
+                    episode_updatedate: true,
+                    scenes: true
                 },
                 orderBy: {
                     episode_uploaddate: 'desc'
@@ -174,7 +175,8 @@ export const getFeaktionManyforMoreNovels = async ( user_id: number, take?: numb
             feaktion_user: {
                 select: {
                     id: true,
-                    nickname: true
+                    nickname: true,
+                    user_id: true
                 }
             },
             _count: {
@@ -238,7 +240,8 @@ export const getFeaktionManyforMoreShorts = async ( user_id: number, take?: numb
             feaktion_user: {
                 select: {
                     id: true,
-                    nickname: true
+                    nickname: true,
+                    user_id: true
                 }
             },
             _count: {
@@ -398,6 +401,7 @@ export const deleteGenre = async (data) => {
 }
 
 export const getFeaktionCounts = async (feaktion_id: number) => {
+    //deprecated
     const result = {
         likeCount: 0,
         commentCount: 0

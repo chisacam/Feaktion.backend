@@ -29,6 +29,8 @@ const router = Router({
  *               properties:
  *                 episode_title:
  *                   type: string
+ *                 writer_comment:
+ *                   type: string
  *                 scenes:
  *                   type: array
  *                   items:
@@ -136,6 +138,8 @@ router.delete('/:episode_id', authToken, FeaktionController.isFeaktionWriter, Ep
  *             schema:
  *               properties:
  *                 episode_title:
+ *                   type: string
+ *                 writer_comment:
  *                   type: string
  *                 scenes:
  *                   type: array

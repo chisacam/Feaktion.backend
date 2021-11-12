@@ -94,9 +94,15 @@ export const getFeaktionManyforMain = async (req: Request, res: Response, next: 
 export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getFeaktionManyforMoreNovels(user_id)
-        if (!data) throw new NotFoundError()
+        const orig_data = await FeaktionService.getFeaktionManyforMoreNovels(user_id)
+        if (!orig_data) throw new NotFoundError()
 
+        const data = orig_data.map(item => {
+            return {
+                ...item,
+                isWriter: item.feaktion_user.user_id == user_id
+            }
+        })
         apiResponser({ 
             req, 
             res, 
@@ -112,9 +118,15 @@ export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, 
 export const getFeaktionManyforMoreShorts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getFeaktionManyforMoreShorts(user_id)
-        if (!data) throw new NotFoundError()
+        const orig_data = await FeaktionService.getFeaktionManyforMoreShorts(user_id)
+        if (!orig_data) throw new NotFoundError()
 
+        const data = orig_data.map(item => {
+            return {
+                ...item,
+                isWriter: item.feaktion_user.user_id == user_id
+            }
+        })
         apiResponser({ 
             req, 
             res, 
@@ -251,8 +263,6 @@ export const addFavorite = async (req: Request, res: Response, next: NextFunctio
         const feaktion_id_int = await parseIntParam(feaktion_id)
         const data = await FeaktionService.addFavorite(feaktion_id_int, user_id)
 
-        if (!data) throw new NotFoundError()
-
         apiResponser({ 
             req, 
             res, 
@@ -287,9 +297,16 @@ export const deleteFavorite = async (req: Request, res: Response, next: NextFunc
 export const getFavorite = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getFavorite(user_id)
-        if (!data) throw new NotFoundError()
+        const orig_data = await FeaktionService.getFavorite(user_id)
+        if (!orig_data) throw new NotFoundError()
 
+        const data = orig_data.map(item => {
+            return {
+                ...item,
+                isWriter: item.feaktion.feaktion_user.user_id == user_id
+            }
+        })
+        
         apiResponser({ 
             req, 
             res, 
@@ -305,8 +322,15 @@ export const getFavorite = async (req: Request, res: Response, next: NextFunctio
 export const getReadedFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getReadedFeaktion(user_id)
-        if (!data) throw new NotFoundError()
+        const orig_data = await FeaktionService.getReadedFeaktion(user_id)
+        if (!orig_data) throw new NotFoundError()
+
+        const data = orig_data.map(item => {
+            return {
+                ...item,
+                isWriter: item.feaktion.feaktion_user.user_id == user_id
+            }
+        })
 
         apiResponser({ 
             req, 
@@ -323,9 +347,16 @@ export const getReadedFeaktion = async (req: Request, res: Response, next: NextF
 export const getInterestGenreFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const data = await FeaktionService.getInterestGenreFeaktion(user_id)
-        if (!data) throw new NotFoundError()
+        const orig_data = await FeaktionService.getInterestGenreFeaktion(user_id)
+        if (!orig_data) throw new NotFoundError()
 
+
+        const data = orig_data.map(item => {
+            return {
+                ...item,
+                isWriter: item.feaktion_user.user_id == user_id
+            }
+        })
         apiResponser({ 
             req, 
             res, 
