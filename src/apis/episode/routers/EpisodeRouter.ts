@@ -212,6 +212,13 @@ router.post('/:episode_id/like', authToken, EpisodeController.addEpisodeLike)
  *         name: feaktion_id
  *         required: true
  *         type: number
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 like_id:
+ *                   type: number
  *       responses:
  *         '200':
  *           content:
