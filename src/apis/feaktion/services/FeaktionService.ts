@@ -172,6 +172,7 @@ export const getFeaktionManyforMoreNovels = async ( user_id: number, take?: numb
             feaktion_title: true,
             feaktion_thumb: true,
             feaktion_uploaddate: true,
+            feaktion_type: true,
             feaktion_user: {
                 select: {
                     id: true,
@@ -237,6 +238,7 @@ export const getFeaktionManyforMoreShorts = async ( user_id: number, take?: numb
             feaktion_title: true,
             feaktion_thumb: true,
             feaktion_uploaddate: true,
+            feaktion_type: true,
             feaktion_user: {
                 select: {
                     id: true,
@@ -462,6 +464,7 @@ export const getFavorite = async (user_id: number) => {
                     feaktion_thumb: true,
                     feaktion_description: true,
                     feaktion_uploaddate: true,
+                    feaktion_type: true,
                     feaktion_user: {
                         select: {
                             id: true,
