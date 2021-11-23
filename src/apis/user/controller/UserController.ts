@@ -7,6 +7,7 @@ import { NotFoundError, AlreadyExistError, ValidationFailError } from '../../../
 import { parseIntParam } from '../../../lib/parseParams'
 import { generateToken } from '../../../lib/tokenManager'
 import apiResponser from '../../../middleware/apiResponser'
+import FeaktionService from '../../feaktion/services'
 
 
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -188,6 +189,62 @@ export const getUserInfo = async (req, res, next) => {
     } catch(err) {
         next(err)
     }   
+}
+
+export const getAnotherUserInfo = async (req, res, next) => {
+    const { user_id } = req.params
+    try {
+        const user_id_int = await parseIntParam(user_id)
+        const user_data = await UserService.getUserInfo(user_id_int)
+        const data = {
+            ...user_data,
+            novels: await FeaktionService.getUserWritedfeaktions(user_id_int, 'novel', 10),
+            shorts: await FeaktionService.getUserWritedfeaktions(user_id_int, 'short', 10),
+        }
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
+            result: true,
+            data
+        })
+    } catch(err) {
+        next(err)
+    }   
+}
+
+export const getUserWritedNovels = async (req, res, next) => {
+    const { user_id } = req.params
+    try {
+        const user_id_int = await parseIntParam(user_id)
+        const data = await FeaktionService.getUserWritedfeaktions(user_id_int, 'novel')
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
+            result: true,
+            data
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const getUserWritedShorts = async (req, res, next) => {
+    const { user_id } = req.params
+    try {
+        const user_id_int = await parseIntParam(user_id)
+        const data = await FeaktionService.getUserWritedfeaktions(user_id_int, 'short')
+        apiResponser({
+            req,
+            res,
+            statusCode: 200,
+            result: true,
+            data
+        })
+    } catch(err) {
+        next(err)
+    }
 }
 
 export const updateUserProfile = async (req: Request, res: Response, next: NextFunction) => {

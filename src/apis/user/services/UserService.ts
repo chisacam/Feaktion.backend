@@ -83,8 +83,14 @@ export const getUserInfo = async ( user_id ) => {
         where: {
             user_id
         },
-        include: {
-            user_interest: true
+        select: {
+            user_id: true,
+            user_interest: true,
+            nickname: true,
+            regdate: true,
+            profile: true,
+            intro: true,
+            sex: true
         }
     })
 

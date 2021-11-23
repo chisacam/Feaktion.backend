@@ -94,7 +94,7 @@ export const getFeaktionManyforMain = async (req: Request, res: Response, next: 
 export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const orig_data = await FeaktionService.getFeaktionManyforMoreNovels(user_id)
+        const orig_data = await FeaktionService.getFeaktionManyforMore(user_id, 'novel')
         if (!orig_data) throw new NotFoundError()
 
         const data = orig_data.map(item => {
@@ -118,7 +118,7 @@ export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, 
 export const getFeaktionManyforMoreShorts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
     try {
-        const orig_data = await FeaktionService.getFeaktionManyforMoreShorts(user_id)
+        const orig_data = await FeaktionService.getFeaktionManyforMore(user_id, 'short')
         if (!orig_data) throw new NotFoundError()
 
         const data = orig_data.map(item => {

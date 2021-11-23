@@ -165,7 +165,7 @@ export const getInterestGenreFeaktion = async (user_id: number, take?: number) =
     return result
 }
 
-export const getFeaktionManyforMoreNovels = async ( user_id: number, take?: number ) => {
+export const getFeaktionManyforMore = async ( user_id: number, feaktion_type: string, take?: number ) => {
     const novels = await prisma.feaktion.findMany({
         take,
         select: {
@@ -215,7 +215,7 @@ export const getFeaktionManyforMoreNovels = async ( user_id: number, take?: numb
             }
         },
         where: {
-            feaktion_type: 'novel',
+            feaktion_type,
             feaktion_pub: 'public',
             episode: {
                 some: {
@@ -231,81 +231,15 @@ export const getFeaktionManyforMoreNovels = async ( user_id: number, take?: numb
     return novels
 }
 
-export const getFeaktionManyforMoreShorts = async ( user_id: number, take?: number) => {
-    const shorts = await prisma.feaktion.findMany({
-        take,
-        select: {
-            feaktion_id: true,
-            feaktion_title: true,
-            feaktion_thumb: true,
-            feaktion_uploaddate: true,
-            feaktion_type: true,
-            feaktion_user: {
-                select: {
-                    id: true,
-                    nickname: true,
-                    user_id: true
-                }
-            },
-            _count: {
-                select: {
-                    episode: true,
-                    episode_like: true,
-                    favorite_feaktion: true,
-                    comment: true,
-                    reading_history: true
-                }
-            },
-            episode: {
-                take: 1,
-                select: {
-                    episode_uploaddate: true,
-                },
-                orderBy: {
-                    episode_uploaddate: 'desc'
-                }
-            },
-            favorite_feaktion: {
-                where: {
-                    user_id
-                },
-                include: {
-                    feaktion_user: {
-                        select: {
-                            id: true,
-                            nickname: true,
-                            user_id: true
-                        }
-                    }
-                }
-            }
-        },
-        where: {
-            feaktion_type: 'short',
-            feaktion_pub: 'public',
-            episode: {
-                some: {
-
-                }
-            }
-        },
-        orderBy: {
-            feaktion_uploaddate: 'desc'
-        }
-    })
-
-    return shorts
-}
-
 export const getFeaktionManyforMain = async ( user_id: number ) => {
 
     const recent = await getReadedFeaktion(user_id, 20)
 
     const interest_genres = await getInterestGenreFeaktion(user_id, 20)
 
-    const novels = await getFeaktionManyforMoreNovels(user_id)
+    const novels = await getFeaktionManyforMore(user_id, 'novel')
 
-    const shorts = await getFeaktionManyforMoreShorts(user_id, 4)
+    const shorts = await getFeaktionManyforMore(user_id, 'short', 4)
 
     const result = {
         recent,
@@ -326,7 +260,8 @@ export const getMyFeaktionMany = async (user_id: number) => {
             feaktion_user: {
                 select: {
                     nickname: true,
-                    id: true
+                    id: true,
+                    user_id: true
                 }
             },
             _count: {
@@ -561,6 +496,44 @@ export const updateFeaktionNotice = async(id: number, data: any) => {
 export const addFeaktionNotice = async(data: any) => {
     const result = await prisma.feaktion_notice.create({
         data
+    })
+
+    return result
+}
+
+export const getUserWritedfeaktions = async (user_id: number, feaktion_type: string, take?: number) => {
+    const result = await prisma.feaktion.findMany({
+        take,
+        where: {
+            user_id,
+            feaktion_type
+        },
+        include: {
+            feaktion_user: {
+                select: {
+                    nickname: true,
+                    id: true,
+                    user_id: true
+                }
+            },
+            episode: {
+                take: 1,
+                select: {
+                    episode_uploaddate: true,
+                },
+                orderBy: {
+                    episode_uploaddate: 'desc'
+                }
+            },
+            _count: {
+                select: {
+                    episode: true,
+                    episode_like: true,
+                    favorite_feaktion: true,
+                    reading_history: true
+                }
+            }
+        }
     })
 
     return result

@@ -300,5 +300,80 @@ router.post('/interest', authToken, UserController.addInterestGenre)
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
 router.patch('/interest', authToken, UserController.patchInterestGenre)
+/** 
+ * @swagger
+ *   /user/{user_id}:
+ *     get:
+ *       tags:
+ *       - user
+ *       description: 특정 유저 정보 요청
+ *       parameters:
+ *       - in: path
+ *         name: user_id
+ *         required: true
+ *         type: number
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '404':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/:user_id', authToken, UserController.getAnotherUserInfo)
+/** 
+ * @swagger
+ *   /user/{user_id}/novels:
+ *     get:
+ *       tags:
+ *       - user
+ *       description: 특정 유저가 쓴 연재글 목록 요청
+ *       parameters:
+ *       - in: path
+ *         name: user_id
+ *         required: true
+ *         type: number
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '404':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/:user_id/novels', authToken, UserController.getUserWritedNovels)
+/** 
+ * @swagger
+ *   /user/{user_id}:
+ *     get:
+ *       tags:
+ *       - user
+ *       description: 특정 유저가 쓴 단편글 목록 요청
+ *       parameters:
+ *       - in: path
+ *         name: user_id
+ *         required: true
+ *         type: number
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '404':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/:user_id/shorts', authToken, UserController.getUserWritedShorts)
 
 export default router
