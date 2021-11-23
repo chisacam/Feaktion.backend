@@ -93,6 +93,7 @@ model feaktion {
   episode_like         episode_like[]
   reading_history      reading_history[]
   favorite_feaktion    favorite_feaktion[]
+  feaktion_notice      feaktion_notice[]
 }
 
 model episode_like {
@@ -127,6 +128,7 @@ model feaktion_user {
   episode_temp_saved episode_temp_saved[]
   episode            episode[]
   favorite_feaktion  favorite_feaktion[]
+  feaktion_notice    feaktion_notice[]
 }
 
 model user_interest {
@@ -173,6 +175,18 @@ model favorite_feaktion {
   feaktion_id   Int
   user_id       Int
   added_date    DateTime      @default(now()) @db.Timestamp(0)
+  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id])
+  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id])
+}
+
+model feaktion_notice {
+  id            Int           @id @default(autoincrement())
+  feaktion_id   Int
+  user_id       Int
+  write_date    Int
+  images        String[]
+  notice_title  String
+  notice_body   String
   feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id])
   feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id])
 }
