@@ -328,6 +328,14 @@ export const getMyFeaktionMany = async (user_id: number) => {
                     nickname: true,
                     id: true
                 }
+            },
+            _count: {
+                select: {
+                    episode: true,
+                    episode_like: true,
+                    favorite_feaktion: true,
+                    reading_history: true
+                }
             }
         }
     })
