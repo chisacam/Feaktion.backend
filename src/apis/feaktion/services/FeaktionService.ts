@@ -495,6 +495,7 @@ export const getFavorite = async (user_id: number) => {
                     _count: {
                         select: {
                             episode: true,
+                            episode_like: true,
                             favorite_feaktion: true,
                             comment: true,
                             reading_history: true
