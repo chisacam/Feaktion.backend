@@ -336,7 +336,7 @@ router.patch('/:feaktion_id', authToken, FeaktionController.isFeaktionWriter, Fe
 router.post('/:feaktion_id/favorite', authToken, FeaktionController.addFavorite)
 /**
  * @swagger
- *   /feaktion/{feaktion_id}/notice
+ *   /feaktion/{feaktion_id}/notice:
  *     post:
  *       tags:
  *       - feaktion
@@ -357,8 +357,8 @@ router.post('/:feaktion_id/favorite', authToken, FeaktionController.addFavorite)
  *                   type: string
  *                 images:
  *                   type: array
- *                     items:
- *                       type: string
+ *                   items:
+ *                     type: string
  *       responses:
  *         '200':
  *           content:
@@ -400,8 +400,8 @@ router.post('/:feaktion_id/notice', authToken, FeaktionController.isFeaktionWrit
  *                   type: string
  *                 images:
  *                   type: array
- *                     items:
- *                       type: string
+ *                   items:
+ *                     type: string
  *       responses:
  *         '200':
  *           content:
