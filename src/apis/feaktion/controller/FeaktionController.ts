@@ -368,3 +368,85 @@ export const getInterestGenreFeaktion = async (req: Request, res: Response, next
         next(err)
     }
 }
+
+export const getFeaktionNotice = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { notice_id } = req.params
+    try {
+        const notice_id_int = await parseIntParam(notice_id)
+        const data = await FeaktionService.getFeaktionNotice(notice_id_int)
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            data, 
+            message: 'Get feaktion notice 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const deleteFeaktionNotice = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { notice_id } = req.params
+    try {
+        const notice_id_int = await parseIntParam(notice_id)
+        await FeaktionService.deleteFeaktionNotice(notice_id_int)
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            message: 'Delete feaktion notice 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const updateFeaktionNotice = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { notice_id } = req.params
+    const { notice_title, notice_body, images } = req.body
+
+    try {
+        const notice_id_int = await parseIntParam(notice_id)
+        await FeaktionService.updateFeaktionNotice(notice_id_int, {
+            notice_title,
+            notice_body
+        })
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            message: 'Update feaktion notice 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const addFeaktionNotice = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { feaktion_id } = req.params
+    const { notice_title, notice_body, images } = req.body
+    const { user_id } = res.locals.userInfo
+
+    try {
+        const feaktion_id_int = await parseIntParam(feaktion_id)
+        await FeaktionService.addFeaktionNotice({
+            notice_title,
+            notice_body,
+            feaktion_id: feaktion_id_int,
+            user_id
+        })
+
+        apiResponser({ 
+            req, 
+            res, 
+            result: true,
+            message: 'Add feaktion notice 성공' 
+        })
+    } catch(err) {
+        next(err)
+    }
+}

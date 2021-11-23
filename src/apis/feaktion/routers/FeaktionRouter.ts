@@ -334,6 +334,146 @@ router.patch('/:feaktion_id', authToken, FeaktionController.isFeaktionWriter, Fe
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
 router.post('/:feaktion_id/favorite', authToken, FeaktionController.addFavorite)
+/**
+ * @swagger
+ *   /feaktion/{feaktion_id}/notice
+ *     post:
+ *       tags:
+ *       - feaktion
+ *       description: feaktion 공지사항 추가
+ *       parameters:
+ *       - in: path
+ *         name: feaktion_id
+ *         required: true
+ *         type: number
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 notice_title:
+ *                   type: string
+ *                 notice_body:
+ *                   type: string
+ *                 images:
+ *                   type: array
+ *                     items:
+ *                       type: string
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ * 
+ */
+router.post('/:feaktion_id/notice', authToken, FeaktionController.isFeaktionWriter, FeaktionController.addFeaktionNotice)
+/** 
+ * @swagger
+ *   /feaktion/{feaktion_id}/notice/{notice_id}:
+ *     patch:
+ *       tags:
+ *       - feaktion
+ *       description: feaktion 공지사항 수정
+ *       parameters:
+ *       - in: path
+ *         name: feaktion_id
+ *         required: true
+ *         type: number
+ *       - in: path
+ *         name: notice_id
+ *         required: true
+ *         type: number
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 notice_title:
+ *                   type: string
+ *                 notice_body:
+ *                   type: string
+ *                 images:
+ *                   type: array
+ *                     items:
+ *                       type: string
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ * 
+ */
+router.patch('/:feaktion_id/notice/:notice_id', authToken, FeaktionController.isFeaktionWriter, FeaktionController.updateFeaktionNotice)
+/** 
+ * @swagger
+ *   /feaktion/{feaktion_id}/notice/{notice_id}:
+ *     delete:
+ *       tags:
+ *       - feaktion
+ *       description: feaktion 공지사항 삭제
+ *       parameters:
+ *       - in: path
+ *         name: feaktion_id
+ *         required: true
+ *         type: number
+ *       - in: path
+ *         name: notice_id
+ *         required: true
+ *         type: number
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.delete('/:feaktion_id/notice/:notice_id', authToken, FeaktionController.isFeaktionWriter, FeaktionController.deleteFeaktionNotice)
+/** 
+ * @swagger
+ *   /feaktion/{feaktion_id}/notice/{notice_id}:
+ *     get:
+ *       tags:
+ *       - feaktion
+ *       description: feaktion 공지사항 조회
+ *       parameters:
+ *       - in: path
+ *         name: feaktion_id
+ *         required: true
+ *         type: number
+ *       - in: path
+ *         name: notice_id
+ *         required: true
+ *         type: number
+ *       responses:
+ *         '200':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseSuccess'
+ *         '400':
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/ApiResponseFail'
+ */
+router.get('/:feaktion_id/notice/:notice_id', authToken, FeaktionController.getFeaktionNotice)
 router.use('/:feaktion_id/episode', EpisodeRouter)
 
 export default router

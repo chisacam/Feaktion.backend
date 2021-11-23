@@ -74,7 +74,8 @@ export const getFeaktion = async (feaktion_id: number, user_id: number): Promise
                         }
                     }
                 }
-            }
+            },
+            feaktion_notice: true
         },
         where: {
             feaktion_id
@@ -504,6 +505,54 @@ export const getFavorite = async (user_id: number) => {
                 }
             }
         }
+    })
+
+    return result
+}
+
+export const getFeaktionNotice = async(id: number) => {
+    const result = await prisma.feaktion_notice.findUnique({
+        where: {
+            id
+        },
+        include: {
+            feaktion_user: {
+                select: {
+                    nickname: true,
+                    id: true,
+                    user_id: true
+                }
+            }
+        }
+    })
+
+    return result
+}
+
+export const deleteFeaktionNotice = async(id: number) => {
+    const result = await prisma.feaktion_notice.delete({
+        where: {
+            id
+        }
+    })
+
+    return result
+}
+
+export const updateFeaktionNotice = async(id: number, data: any) => {
+    const result = await prisma.feaktion_notice.update({
+        where: {
+            id
+        },
+        data
+    })
+
+    return result
+}
+
+export const addFeaktionNotice = async(data: any) => {
+    const result = await prisma.feaktion_notice.create({
+        data
     })
 
     return result
