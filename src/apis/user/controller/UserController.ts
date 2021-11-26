@@ -196,10 +196,25 @@ export const getAnotherUserInfo = async (req, res, next) => {
     try {
         const user_id_int = await parseIntParam(user_id)
         const user_data = await UserService.getUserInfo(user_id_int)
+        const orig_novels = await FeaktionService.getUserWritedfeaktions(user_id_int, 'novel', 10)
+        const orig_shorts = await FeaktionService.getUserWritedfeaktions(user_id_int, 'short', 10)
+        const novels = orig_novels.map(novel => {
+            return {
+                ...novel,
+                isWriter: novel.feaktion_user.user_id == user_id_int
+            }
+        })
+
+        const shorts = orig_shorts.map(short => {
+            return {
+                ...short,
+                isWriter: short.feaktion_user.user_id == user_id_int
+            }
+        })
         const data = {
             ...user_data,
-            novels: await FeaktionService.getUserWritedfeaktions(user_id_int, 'novel', 10),
-            shorts: await FeaktionService.getUserWritedfeaktions(user_id_int, 'short', 10),
+            novels,
+            shorts
         }
         apiResponser({
             req,
@@ -217,7 +232,13 @@ export const getUserWritedNovels = async (req, res, next) => {
     const { user_id } = req.params
     try {
         const user_id_int = await parseIntParam(user_id)
-        const data = await FeaktionService.getUserWritedfeaktions(user_id_int, 'novel')
+        const orig_data = await FeaktionService.getUserWritedfeaktions(user_id_int, 'novel')
+        const data = orig_data.map(novel => {
+            return {
+                ...novel,
+                isWriter: novel.feaktion_user.user_id == user_id_int
+            }
+        })
         apiResponser({
             req,
             res,
@@ -234,7 +255,13 @@ export const getUserWritedShorts = async (req, res, next) => {
     const { user_id } = req.params
     try {
         const user_id_int = await parseIntParam(user_id)
-        const data = await FeaktionService.getUserWritedfeaktions(user_id_int, 'short')
+        const orig_data = await FeaktionService.getUserWritedfeaktions(user_id_int, 'short')
+        const data = orig_data.map(short => {
+            return {
+                ...short,
+                isWriter: short.feaktion_user.user_id == user_id_int
+            }
+        })
         apiResponser({
             req,
             res,

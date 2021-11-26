@@ -90,7 +90,8 @@ export const getUserInfo = async ( user_id ) => {
             regdate: true,
             profile: true,
             intro: true,
-            sex: true
+            sex: true,
+            id: true
         }
     })
 

@@ -164,7 +164,7 @@ router.delete('/', authToken, UserController.deleteUser)
  *     get:
  *       tags:
  *       - user
- *       description: 회원 정보 요청
+ *       description: 회원 정보 요청(작성글 제외)
  *       responses:
  *         '200':
  *           content:
@@ -352,7 +352,7 @@ router.get('/:user_id', authToken, UserController.getAnotherUserInfo)
 router.get('/:user_id/novels', authToken, UserController.getUserWritedNovels)
 /** 
  * @swagger
- *   /user/{user_id}:
+ *   /user/{user_id}/shorts:
  *     get:
  *       tags:
  *       - user

@@ -24,6 +24,9 @@ const router = Router()
  *                   type: string
  *                 feaktion_type:
  *                   type: string
+ *                   enum:
+ *                     - short
+ *                     - novel
  *                 feaktion_pub:
  *                   type: string
  *                 feaktion_thumbnail:
