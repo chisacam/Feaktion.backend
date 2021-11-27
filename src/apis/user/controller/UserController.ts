@@ -214,7 +214,7 @@ export const getAnotherUserInfo = async (req, res, next) => {
         })
         const data = {
             ...user_data,
-            isMe: user_data.user_id == user_id,
+            isMe: target_user_id == user_id,
             novels,
             shorts
         }
