@@ -309,7 +309,7 @@ router.patch('/interest', authToken, UserController.patchInterestGenre)
  *       description: 특정 유저 정보 요청
  *       parameters:
  *       - in: path
- *         name: user_id
+ *         name: target_user_id
  *         required: true
  *         type: number
  *       responses:
@@ -324,7 +324,7 @@ router.patch('/interest', authToken, UserController.patchInterestGenre)
  *               schema:
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
-router.get('/:user_id', authToken, UserController.getAnotherUserInfo)
+router.get('/:target_user_id', authToken, UserController.getAnotherUserInfo)
 /** 
  * @swagger
  *   /user/{user_id}/novels:
@@ -334,7 +334,7 @@ router.get('/:user_id', authToken, UserController.getAnotherUserInfo)
  *       description: 특정 유저가 쓴 연재글 목록 요청
  *       parameters:
  *       - in: path
- *         name: user_id
+ *         name: target_user_id
  *         required: true
  *         type: number
  *       responses:
@@ -349,7 +349,7 @@ router.get('/:user_id', authToken, UserController.getAnotherUserInfo)
  *               schema:
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
-router.get('/:user_id/novels', authToken, UserController.getUserWritedNovels)
+router.get('/:target_user_id/novels', authToken, UserController.getUserWritedNovels)
 /** 
  * @swagger
  *   /user/{user_id}/shorts:
@@ -359,7 +359,7 @@ router.get('/:user_id/novels', authToken, UserController.getUserWritedNovels)
  *       description: 특정 유저가 쓴 단편글 목록 요청
  *       parameters:
  *       - in: path
- *         name: user_id
+ *         name: target_user_id
  *         required: true
  *         type: number
  *       responses:
@@ -374,6 +374,6 @@ router.get('/:user_id/novels', authToken, UserController.getUserWritedNovels)
  *               schema:
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
-router.get('/:user_id/shorts', authToken, UserController.getUserWritedShorts)
+router.get('/:target_user_id/shorts', authToken, UserController.getUserWritedShorts)
 
 export default router

@@ -192,27 +192,29 @@ export const getUserInfo = async (req, res, next) => {
 }
 
 export const getAnotherUserInfo = async (req, res, next) => {
-    const { user_id } = req.params
+    const { target_user_id } = req.params
+    const { user_id } = res.locals.userInfo
     try {
-        const user_id_int = await parseIntParam(user_id)
-        const user_data = await UserService.getUserInfo(user_id_int)
-        const orig_novels = await FeaktionService.getUserWritedfeaktions(user_id_int, 'novel', 10)
-        const orig_shorts = await FeaktionService.getUserWritedfeaktions(user_id_int, 'short', 10)
+        const target_user_id_int = await parseIntParam(target_user_id)
+        const user_data = await UserService.getUserInfo(target_user_id_int)
+        const orig_novels = await FeaktionService.getUserWritedfeaktions(target_user_id_int, 'novel', 10)
+        const orig_shorts = await FeaktionService.getUserWritedfeaktions(target_user_id_int, 'short', 10)
         const novels = orig_novels.map(novel => {
             return {
                 ...novel,
-                isWriter: novel.feaktion_user.user_id == user_id_int
+                isWriter: novel.feaktion_user.user_id == user_id
             }
         })
 
         const shorts = orig_shorts.map(short => {
             return {
                 ...short,
-                isWriter: short.feaktion_user.user_id == user_id_int
+                isWriter: short.feaktion_user.user_id == user_id
             }
         })
         const data = {
             ...user_data,
+            isMe: user_data.user_id == user_id,
             novels,
             shorts
         }
@@ -229,14 +231,15 @@ export const getAnotherUserInfo = async (req, res, next) => {
 }
 
 export const getUserWritedNovels = async (req, res, next) => {
-    const { user_id } = req.params
+    const { target_user_id } = req.params
+    const { user_id } = res.locals.userInfo
     try {
-        const user_id_int = await parseIntParam(user_id)
-        const orig_data = await FeaktionService.getUserWritedfeaktions(user_id_int, 'novel')
+        const target_user_id_int = await parseIntParam(target_user_id)
+        const orig_data = await FeaktionService.getUserWritedfeaktions(target_user_id_int, 'novel')
         const data = orig_data.map(novel => {
             return {
                 ...novel,
-                isWriter: novel.feaktion_user.user_id == user_id_int
+                isWriter: novel.feaktion_user.user_id == user_id
             }
         })
         apiResponser({
@@ -252,14 +255,15 @@ export const getUserWritedNovels = async (req, res, next) => {
 }
 
 export const getUserWritedShorts = async (req, res, next) => {
-    const { user_id } = req.params
+    const { target_user_id } = req.params
+    const { user_id } = res.locals.userInfo
     try {
-        const user_id_int = await parseIntParam(user_id)
-        const orig_data = await FeaktionService.getUserWritedfeaktions(user_id_int, 'short')
+        const target_user_id_int = await parseIntParam(target_user_id)
+        const orig_data = await FeaktionService.getUserWritedfeaktions(target_user_id_int, 'short')
         const data = orig_data.map(short => {
             return {
                 ...short,
-                isWriter: short.feaktion_user.user_id == user_id_int
+                isWriter: short.feaktion_user.user_id == user_id
             }
         })
         apiResponser({
