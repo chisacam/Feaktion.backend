@@ -183,7 +183,7 @@ model feaktion_notice {
   id            Int           @id @default(autoincrement())
   feaktion_id   Int
   user_id       Int
-  write_date    Int
+  write_date    DateTime      @default(now()) @db.Timestamp(0)
   images        String[]
   notice_title  String
   notice_body   String
