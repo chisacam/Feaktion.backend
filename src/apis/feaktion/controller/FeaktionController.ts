@@ -410,7 +410,7 @@ export const updateFeaktionNotice = async (req: Request, res: Response, next: Ne
 
     try {
         const notice_id_int = await parseIntParam(notice_id)
-        await FeaktionService.updateFeaktionNotice(notice_id_int, {
+        const data = await FeaktionService.updateFeaktionNotice(notice_id_int, {
             notice_title,
             notice_body
         })
@@ -418,6 +418,7 @@ export const updateFeaktionNotice = async (req: Request, res: Response, next: Ne
         apiResponser({ 
             req, 
             res, 
+            data,
             result: true,
             message: 'Update feaktion notice 성공' 
         })
