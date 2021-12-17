@@ -1,12 +1,13 @@
 import common = require('oci-common')
 import { ObjectStorageClient, requests, models } from 'oci-objectstorage'
+import { nullStringSafe } from './nullSafeChecker'
 
 export const puturlgenerate = async (): Promise<string> => {
     const provider: common.ConfigFileAuthenticationDetailsProvider = new common.ConfigFileAuthenticationDetailsProvider()
 
-    const bucketName = 'feaktion'
-    const namespaceName = 'cnycu6m6oxz7'
-    const regionId = 'ap-seoul-1'
+    const bucketName: string = nullStringSafe(process.env.BUCKET_NAME)
+    const namespaceName: string = nullStringSafe(process.env.NAME_SPACE)
+    const regionId: string = nullStringSafe(process.env.REGION_ID)
     const serviceName = 'objectstorage'
 
     const client = new ObjectStorageClient({ authenticationDetailsProvider: provider })
@@ -15,21 +16,21 @@ export const puturlgenerate = async (): Promise<string> => {
     const neverExpires = new Date(today)
     neverExpires.setMinutes(neverExpires.getMinutes() + 30)
 
-    // use date for generating a random unique id which can be used as a par id
     const createPreauthenticatedRequestDetails = {
-        name: 'puturlgenerate',
+        name: 'puturlgenerate' + today.toString(),
         accessType: models.CreatePreauthenticatedRequestDetails.AccessType.AnyObjectWrite,
         timeExpires: neverExpires
     } as models.CreatePreauthenticatedRequestDetails
+
     const createPreauthenticatedRequest: requests.CreatePreauthenticatedRequestRequest = {
-        bucketName: bucketName,
-        namespaceName: namespaceName,
-        createPreauthenticatedRequestDetails: createPreauthenticatedRequestDetails
+        bucketName,
+        namespaceName,
+        createPreauthenticatedRequestDetails
     }
 
     const resp = await client.createPreauthenticatedRequest(createPreauthenticatedRequest)
-    const generated_uri = resp.preauthenticatedRequest.accessUri
-    const result_url = 'https://' + serviceName + '.' + regionId + '.oraclecloud.com' + generated_uri
+    const generated_uri: string = resp.preauthenticatedRequest.accessUri
+    const result_url: string = 'https://' + serviceName + '.' + regionId + '.oraclecloud.com' + generated_uri
 
     return result_url
 }
@@ -37,9 +38,9 @@ export const puturlgenerate = async (): Promise<string> => {
 export const geturlgenerate = async (): Promise<string> => {
     const provider: common.ConfigFileAuthenticationDetailsProvider = new common.ConfigFileAuthenticationDetailsProvider()
 
-    const bucketName = 'feaktion'
-    const namespaceName = 'cnycu6m6oxz7'
-    const regionId = 'ap-seoul-1'
+    const bucketName = nullStringSafe(process.env.BUCKET_NAME)
+    const namespaceName = nullStringSafe(process.env.NAME_SPACE)
+    const regionId = nullStringSafe(process.env.REGION_ID)
     const serviceName = 'objectstorage'
 
     const client = new ObjectStorageClient({ authenticationDetailsProvider: provider })
@@ -48,16 +49,15 @@ export const geturlgenerate = async (): Promise<string> => {
     const neverExpires = new Date(today)
     neverExpires.setMinutes(neverExpires.getMinutes() + 30)
 
-    // use date for generating a random unique id which can be used as a par id
     const createPreauthenticatedRequestDetails = {
-        name: 'geturlgenerate',
+        name: 'geturlgenerate' + today.toString(),
         accessType: models.CreatePreauthenticatedRequestDetails.AccessType.AnyObjectRead,
         timeExpires: neverExpires
     } as models.CreatePreauthenticatedRequestDetails
     const createPreauthenticatedRequest: requests.CreatePreauthenticatedRequestRequest = {
-        bucketName: bucketName,
-        namespaceName: namespaceName,
-        createPreauthenticatedRequestDetails: createPreauthenticatedRequestDetails
+        bucketName,
+        namespaceName,
+        createPreauthenticatedRequestDetails
     }
 
     const resp = await client.createPreauthenticatedRequest(createPreauthenticatedRequest)

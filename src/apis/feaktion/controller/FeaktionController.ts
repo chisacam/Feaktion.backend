@@ -6,7 +6,7 @@ import FeaktionService from '../services'
 
 
 export const postFeaktion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { feaktion_title, feaktion_description, genres, feaktion_thumbnail, tags, feaktion_type, feaktion_pub } = req.body
+    const { feaktion_title, feaktion_description, genres, feaktion_thumb, tags, feaktion_type, feaktion_pub } = req.body
     const { user_id } = res.locals.userInfo
 
     try {
@@ -14,9 +14,9 @@ export const postFeaktion = async (req: Request, res: Response, next: NextFuncti
             feaktion_title,
             feaktion_description,
             user_id,
-            feaktion_thumb: 'https://image.novelpia.com',
+            feaktion_thumb,
             feaktion_type,
-            feaktion_pub
+            feaktion_pub,
         })
 
         const feaktion_genre = genres.map((genre) => {

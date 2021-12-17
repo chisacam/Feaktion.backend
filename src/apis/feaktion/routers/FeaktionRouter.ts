@@ -29,7 +29,7 @@ const router = Router()
  *                     - novel
  *                 feaktion_pub:
  *                   type: string
- *                 feaktion_thumbnail:
+ *                 feaktion_thumb:
  *                   type: string
  *                 genres:
  *                   type: array

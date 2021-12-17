@@ -47,13 +47,17 @@ const options: swaggerJSDoc.Options = {
             },
             {
                 name: 'comment'
+            },
+            {
+                name: 'geturl'
             }
         ]
     },
     // api 파일 경로는 항상 프로젝트 루트를 기준으로 할 것
     apis: [
         './src/apis/**/routers/*Router.ts',
-        './src/swagger/*.yaml'
+        './src/swagger/*.yaml',
+        './src/apis/index.ts'
     ]
 }
 
