@@ -438,7 +438,8 @@ export const addFeaktionNotice = async (req: Request, res: Response, next: NextF
             notice_title,
             notice_body,
             feaktion_id: feaktion_id_int,
-            user_id
+            user_id,
+            images
         })
 
         apiResponser({ 
