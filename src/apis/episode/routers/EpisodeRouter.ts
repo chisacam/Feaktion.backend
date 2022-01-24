@@ -164,7 +164,7 @@ router.delete('/:episode_id', authToken, FeaktionController.isFeaktionWriter, Ep
  *               schema:
  *                 $ref: '#/components/schemas/ApiResponseFail'
  */
-router.patch('/:episode_id', FeaktionController.isFeaktionWriter, EpisodeController.updateEpisode)
+router.patch('/:episode_id', authToken, FeaktionController.isFeaktionWriter, EpisodeController.updateEpisode)
 /**
  * @swagger
  *   /feaktion/{feaktion_id}/episode/{episode_id}/like:
