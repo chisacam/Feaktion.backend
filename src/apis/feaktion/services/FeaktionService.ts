@@ -257,6 +257,9 @@ export const getMyFeaktionMany = async (user_id: number, feaktion_type: string) 
             user_id,
             feaktion_type
         },
+        orderBy: {
+            feaktion_uploaddate: 'desc'
+        },
         include: {
             feaktion_user: {
                 select: {
