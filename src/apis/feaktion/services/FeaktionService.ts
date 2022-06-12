@@ -251,10 +251,11 @@ export const getFeaktionManyforMain = async ( user_id: number ) => {
     return result
 }
 
-export const getMyFeaktionMany = async (user_id: number) => {
+export const getMyFeaktionMany = async (user_id: number, feaktion_type: string) => {
     const result = await prisma.feaktion.findMany({
         where: {
-            user_id
+            user_id,
+            feaktion_type
         },
         include: {
             feaktion_user: {

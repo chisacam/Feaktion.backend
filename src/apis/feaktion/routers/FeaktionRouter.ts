@@ -295,7 +295,15 @@ router.delete('/:feaktion_id', authToken, FeaktionController.isFeaktionWriter, F
  *                   type: array
  *                   items:
  *                     type: string
+ *                 removed_genres:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *                 tags:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 removed_tags:
  *                   type: array
  *                   items:
  *                     type: string

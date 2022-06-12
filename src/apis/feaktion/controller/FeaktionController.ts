@@ -141,8 +141,9 @@ export const getFeaktionManyforMoreShorts = async (req: Request, res: Response, 
 
 export const getMyFeaktionMany = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
+    const { type } = req.query
     try {
-        const data = await FeaktionService.getMyFeaktionMany(user_id)
+        const data = await FeaktionService.getMyFeaktionMany(user_id, type as string)
         if (!data) throw new NotFoundError()
 
         apiResponser({ 
