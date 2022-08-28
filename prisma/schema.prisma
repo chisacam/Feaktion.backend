@@ -154,8 +154,8 @@ model reading_history {
   user_id       Int
   reading_date  DateTime      @default(now()) @db.Timestamp(0)
   feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
-  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id])
-  episode       episode       @relation(fields: [episode_id], references: [episode_id])
+  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
+  episode       episode       @relation(fields: [episode_id], references: [episode_id], onDelete: Cascade)
 }
 
 model viewer_setting {
@@ -175,8 +175,8 @@ model favorite_feaktion {
   feaktion_id   Int
   user_id       Int
   added_date    DateTime      @default(now()) @db.Timestamp(0)
-  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id])
-  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id])
+  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
+  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 
 model feaktion_notice {
@@ -187,6 +187,6 @@ model feaktion_notice {
   images        String[]
   notice_title  String
   notice_body   String
-  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id])
-  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id])
+  feaktion      feaktion      @relation(fields: [feaktion_id], references: [feaktion_id], onDelete: Cascade)
+  feaktion_user feaktion_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }

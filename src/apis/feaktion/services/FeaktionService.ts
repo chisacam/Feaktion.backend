@@ -46,7 +46,16 @@ export const getFeaktion = async (feaktion_id: number, user_id: number): Promise
                     episode_title: true,
                     episode_uploaddate: true,
                     episode_updatedate: true,
-                    scenes: true
+                    scenes: true,
+                    reading_history: {
+                        where: {
+                            user_id
+                        },
+                        take: 1,
+                        orderBy: {
+                            reading_id: 'desc'
+                        }
+                    }
                 },
                 orderBy: {
                     episode_uploaddate: 'desc'
