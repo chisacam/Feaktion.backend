@@ -98,7 +98,10 @@ export const getReadedFeaktion = async (user_id: number, take?: number) => {
     const result = await prisma.reading_history.findMany({
         take,
         where: {
-            user_id
+            user_id,
+            feaktion: {
+                feaktion_pub: 'public'
+            }
         },
         include: {
             feaktion: {
@@ -124,7 +127,7 @@ export const getReadedFeaktion = async (user_id: number, take?: number) => {
                             reading_history: true
                         }
                     }
-                }
+                },
             }
         },
         orderBy: {
@@ -155,6 +158,12 @@ export const getInterestGenreFeaktion = async (user_id: number, take?: number) =
                         in: user_genres
                     }
                 }
+            },
+            feaktion_pub: 'public',
+            episode: {
+                some: {
+                    
+                }
             }
         },
         include: {
@@ -174,7 +183,7 @@ export const getInterestGenreFeaktion = async (user_id: number, take?: number) =
     return result
 }
 
-export const getFeaktionManyforMore = async ( user_id: number, feaktion_type: string, take?: number ) => {
+export const getFeaktionManyforMore = async ( user_id: number, feaktion_type: string, take?: number, latest_feaktion_id?: number ) => {
     const novels = await prisma.feaktion.findMany({
         take,
         select: {
@@ -230,6 +239,9 @@ export const getFeaktionManyforMore = async ( user_id: number, feaktion_type: st
                 some: {
                     
                 }
+            },
+            feaktion_id: {
+                lt: latest_feaktion_id
             }
         },
         orderBy: {

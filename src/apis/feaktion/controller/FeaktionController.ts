@@ -93,8 +93,9 @@ export const getFeaktionManyforMain = async (req: Request, res: Response, next: 
 
 export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
+    const { feaktion_id, take } = req.params
     try {
-        const orig_data = await FeaktionService.getFeaktionManyforMore(user_id, 'novel')
+        const orig_data = await FeaktionService.getFeaktionManyforMore(user_id, 'novel', await parseIntParam(take, 20), await parseIntParam(feaktion_id))
         if (!orig_data) throw new NotFoundError()
 
         const data = orig_data.map(item => {
