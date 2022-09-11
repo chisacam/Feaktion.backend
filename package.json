@@ -10,8 +10,7 @@
     "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "lint:init": "eslint --init",
-    "deploy:install": "yarn && nodemon",
-    "prepare": "husky install"
+    "deploy:install": "yarn && nodemon"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

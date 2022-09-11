@@ -93,9 +93,11 @@ export const getFeaktionManyforMain = async (req: Request, res: Response, next: 
 
 export const getFeaktionManyforMoreNovels = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user_id } = res.locals.userInfo
-    const { feaktion_id, take } = req.params
+    const { feaktion_id, take } = req.query
+    
     try {
-        const orig_data = await FeaktionService.getFeaktionManyforMore(user_id, 'novel', await parseIntParam(take, 20), await parseIntParam(feaktion_id))
+        const orig_data = await FeaktionService.getFeaktionManyforMore(user_id, 'novel', await parseIntParam(take as string, 20), await parseIntParam(feaktion_id as string))
+        
         if (!orig_data) throw new NotFoundError()
 
         const data = orig_data.map(item => {
@@ -397,7 +399,7 @@ export const deleteFeaktionNotice = async (req: Request, res: Response, next: Ne
 
         apiResponser({ 
             req, 
-            res, 
+            res,
             result: true,
             message: 'Delete feaktion notice 성공' 
         })
