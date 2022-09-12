@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import UserRouter from './user/routers'
 import FeaktionRouter from './feaktion/routers'
+import SearchRouter from './search/routers'
 import apiResponser from '../middleware/apiResponser'
 import { authToken } from '../middleware/tokenVerify'
 import { putUrlGenerate, getUrlGenerate } from '../middleware/imageUrlGenerater'
@@ -9,6 +10,7 @@ const router = Router()
 
 router.use('/user', UserRouter)
 router.use('/feaktion', FeaktionRouter)
+router.use('/search', SearchRouter)
 /**
  * @swagger
  * paths:

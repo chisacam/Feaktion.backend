@@ -122,3 +122,37 @@ export const changePassword = async ( user_id: number, password: string ) => {
     return result
 }
 
+export const findUserByNickname = async( nickname: string) => {
+    return prisma.feaktion_user.findMany({
+        where: {
+            nickname
+        }
+    })
+}
+
+export const findUserByUserId = async( userId: string) => {
+    return prisma.feaktion_user.findMany({
+        where: {
+            id: userId
+        }
+    })
+}
+
+export const findUserAllByIdAndNickname = async(param:string) => {
+    return prisma.feaktion_user.findMany({
+        where: {
+            OR: [
+                {
+                    nickname: {
+                        contains: param
+                    }
+                }, 
+                { 
+                    id: {
+                        contains: param
+                    }
+                }
+            ]   
+        }
+    })
+}
